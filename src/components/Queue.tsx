@@ -1,8 +1,8 @@
 import { RootState } from "@/app/store";
-import FloatingPlayer from "@/components/FloatingPlayer";
 import React, { useEffect, useState } from "react";
-import { Dimensions, FlatList, Linking, Pressable, View } from "react-native";
+import { Dimensions, Pressable, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { Button, IconButton, Text, Icon } from "react-native-paper";
 import Animated, {
   ReduceMotion,
   useAnimatedStyle,
@@ -17,22 +17,16 @@ import TrackPlayer, {
   useTrackPlayerEvents,
 } from "react-native-track-player";
 import { useDispatch, useSelector } from "react-redux";
-import { addTrack, setupPlayer } from "rntp-service";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
-import { QueryParams } from "expo-linking";
-import { Divider, Text } from "react-native-paper";
-import SongItem from "./SongItem";
 
 type localStateProps = "minimized" | "maximized";
 
 export default function Queue() {
   const { height } = Dimensions.get("screen");
-  const { bottom } = useSafeAreaInsets();
-  const dispatch = useDispatch();
+  const { bottom, top } = useSafeAreaInsets();
   const { colors } = useAppTheme();
   const track: Track | undefined = useActiveTrack();
 
-  const { activeTrack } = useSelector((state: RootState) => state.track);
   const { floatingPlayerHeight } = useSelector(
     (state: RootState) => state.settings.appearance,
   );
@@ -41,7 +35,6 @@ export default function Queue() {
   const [queue, setqueue] = useState<Track[]>();
 
   TrackPlayer.getQueue().then((res) => setqueue(res));
-  useEffect(() => {}, []);
 
   const y = useSharedValue(height + floatingPlayerHeight! + bottom);
 
@@ -73,6 +66,12 @@ export default function Queue() {
   const handleTap = () => {
     if (localState === "minimized") {
       setlocalState("maximized");
+    }
+  };
+
+  const handleTapClose = () => {
+    if (localState === "maximized") {
+      setlocalState("minimized");
     }
   };
 
@@ -128,8 +127,8 @@ export default function Queue() {
           resetY();
         }
       }
-    })
-    .runOnJS(true);
+    });
+  // .runOnJS(true);
 
   const [activestate, setactivestate] = useState<number>();
   useTrackPlayerEvents(
@@ -155,31 +154,52 @@ export default function Queue() {
           className="w-full h-full -top-20 relative"
           style={{ backgroundColor: colors.background }}
         >
-          <Pressable onPress={handleTap} className="z-10">
-            <Animated.View className="h-20" style={[floatingOpacity]}>
-              <FloatingPlayer track={track} />
+          <Pressable onPress={handleTap}>
+            <Animated.View
+              style={[floatingOpacity, { height: floatingPlayerHeight }]}
+              className="relative flex-row items-center justify-center z-10"
+            >
+              <Icon source="layers" size={24} />
+              <View className="absolute flex-row w-full h-full items-center justify-end">
+                <IconButton icon="ellipsis-vertical" size={24} />
+              </View>
             </Animated.View>
           </Pressable>
           <Animated.View
             className="h-full w-full flex-1 items-center justify-center absolute"
             style={[fullOpacity]}
           >
-            <FlatList
-              contentContainerStyle={{ paddingBottom: 80 }}
-              style={{ backgroundColor: colors.background }}
-              className="flex-1 h-full w-full"
-              data={queue}
-              renderItem={({ item }) => (
-                <Pressable onPress={() => handlePlay(item)}>
-                  <SongItem track={item} />
-                </Pressable>
-              )}
-              keyExtractor={(item) => item.id}
-              ItemSeparatorComponent={Divider}
-            />
+            <Pressable
+              onPress={handleTapClose}
+              className="absolute w-full bottom-0"
+              style={{ height: floatingPlayerHeight, paddingBottom: bottom }}
+            >
+              <View className="relative flex-row items-center justify-center z-10 h-full">
+                <Icon source="arrow-down" size={24} />
+                <View className="absolute flex-row w-full h-full items-center justify-between px-4">
+                  <Text>{queue?.length}</Text>
+                  <Button mode="elevated">Queue Loop</Button>
+                </View>
+              </View>
+            </Pressable>
           </Animated.View>
         </Animated.View>
       </GestureDetector>
     </Animated.View>
   );
 }
+// <FlatList
+//   contentContainerStyle={{
+//     paddingBottom: floatingPlayerHeight! + bottom,
+//     paddingTop: top,
+//   }}
+//   style={{ backgroundColor: colors.background }}
+//   className="flex-1 h-full w-full"
+//   data={queue}
+//   renderItem={({ item }) => (
+//     <Pressable onPress={() => handlePlay(item)}>
+//       <SongItem track={item} />
+//     </Pressable>
+//   )}
+//   keyExtractor={(item) => item.id}
+// />

@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, Dimensions } from "react-native";
 import React from "react";
 import PlayerControls from "@/components/PlayerControls";
 import SongArtwork from "@/components/SongArtwork";
@@ -11,6 +11,7 @@ type FullPlayerProps = {
 };
 
 export default function FullPlayer({ track }: FullPlayerProps) {
+  const { height } = Dimensions.get("screen");
   return (
     <View className="h-full p-4 flex-1 items-center justify-evenly">
       <SongArtwork track={track} />

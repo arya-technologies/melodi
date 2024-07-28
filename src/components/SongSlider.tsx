@@ -1,13 +1,9 @@
+import { Slider } from "@miblanchard/react-native-slider";
 import React from "react";
 import { Text, View } from "react-native";
 import { useProgress } from "react-native-track-player";
 import { seekTo } from "react-native-track-player/lib/src/trackPlayer";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { createAnimatedComponent } from "react-native-reanimated/lib/typescript/createAnimatedComponent";
-import { Slider } from "@miblanchard/react-native-slider";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/store";
 
 export default function SongSlider() {
   const { colors } = useAppTheme();
@@ -36,11 +32,3 @@ export default function SongSlider() {
     </View>
   );
 }
-
-export const ThumbPosition = ({ position }: any) => {
-  return (
-    <View className="bg-red-300">
-      <Text>{position}</Text>
-    </View>
-  );
-};

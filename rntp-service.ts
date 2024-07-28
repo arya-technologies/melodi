@@ -32,9 +32,10 @@ export async function setupPlayer() {
   }
 }
 
+//TEST: Temporary
 export async function addTrack() {
-  // await TrackPlayer.add(playlistData);
-  // await TrackPlayer.setRepeatMode(RepeatMode.Queue);
+  await TrackPlayer.add(playlistData);
+  await TrackPlayer.setRepeatMode(RepeatMode.Queue);
 }
 
 export async function playbackService() {

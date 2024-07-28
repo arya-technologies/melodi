@@ -203,11 +203,11 @@ export default function Player() {
             </Pressable>
             <Animated.View
               className="h-full flex-1 items-center justify-center absolute"
-              style={[fullOpacity]}
+              style={[fullOpacity, { paddingBottom: bottom }]}
             >
               <FullPlayer track={track} />
             </Animated.View>
-            <Queue />
+            {/* <Queue /> */}
           </Animated.View>
         </GestureDetector>
       </Animated.View>

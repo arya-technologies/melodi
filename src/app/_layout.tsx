@@ -1,12 +1,10 @@
 import { persistor, store } from "@/app/store";
 import Player from "@/components/Player";
+import Queue from "@/components/Queue";
 import { Material3ThemeProvider } from "@/components/providers/Material3ThemeProvider";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import * as Linking from "expo-linking";
 import * as NavigationBar from "expo-navigation-bar";
-import { useRouter } from "expo-router";
 import { Stack } from "expo-router/stack";
-import * as SplashScreen from "expo-splash-screen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator } from "react-native-paper";
 import TrackPlayer from "react-native-track-player";
@@ -54,7 +52,8 @@ export default function RootLayout() {
               }}
               initialRouteName="(tabs)"
             />
-            <Player />
+            {/* <Player /> */}
+            <Queue />
           </GestureHandlerRootView>
         </Material3ThemeProvider>
       </PersistGate>
