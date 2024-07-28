@@ -1,9 +1,7 @@
 import { RootState } from "@/app/store";
 import FloatingPlayer from "@/components/FloatingPlayer";
-import FullPlayer from "@/components/FullPlayer";
-import { setActiveTrack } from "@/features/slices/trackSlice";
 import React, { useEffect, useState } from "react";
-import { Dimensions, Linking, Pressable, View } from "react-native";
+import { Dimensions, FlatList, Linking, Pressable, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   ReduceMotion,
@@ -16,25 +14,18 @@ import TrackPlayer, {
   Event,
   Track,
   useActiveTrack,
+  useTrackPlayerEvents,
 } from "react-native-track-player";
 import { useDispatch, useSelector } from "react-redux";
 import { addTrack, setupPlayer } from "rntp-service";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
-import { useRouter } from "expo-router";
-import Queue from "./Queue";
+import { QueryParams } from "expo-linking";
+import { Divider, Text } from "react-native-paper";
+import SongItem from "./SongItem";
 
-type localStateProps = "minimized" | "maximized" | "closed";
+type localStateProps = "minimized" | "maximized";
 
-export default function Player() {
-  const router = useRouter();
-
-  Linking.addEventListener("url", ({ url }) => {
-    if (url === "trackplayer://notification.click") {
-      router.canDismiss();
-      setlocalState("maximized");
-    }
-  });
-
+export default function Queue() {
   const { height } = Dimensions.get("screen");
   const { bottom } = useSafeAreaInsets();
   const dispatch = useDispatch();
@@ -46,50 +37,11 @@ export default function Player() {
     (state: RootState) => state.settings.appearance,
   );
 
-  const [localState, setlocalState] = useState<localStateProps>(
-    track ? "minimized" : "closed",
-  );
+  const [localState, setlocalState] = useState<localStateProps>("minimized");
+  const [queue, setqueue] = useState<Track[]>();
 
-  // TrackPlayer.addEventListener(
-  //   Event.PlaybackProgressUpdated,
-  //   ({ track, position }) => {
-  //     console.log(track, position);
-  //     // dispatch(
-  //     //   setActiveTrack({ activeTrack: track, activeTrackPosition: position }),
-  //     // );
-  //   },
-  // );
-
-  TrackPlayer.addEventListener(Event.PlaybackState, ({ state }) => {
-    if (state === "playing" && localState === "closed") {
-      y.value = height - bottom;
-      o.value = 1;
-      setlocalState("minimized");
-    } else if (state === "stopped") {
-      y.value = height + floatingPlayerHeight! + bottom;
-      o.value = 0;
-    }
-  });
-
-  TrackPlayer.addEventListener(
-    Event.PlaybackActiveTrackChanged,
-    ({ track }) => {
-      dispatch(setActiveTrack({ activeTrack: track }));
-    },
-  );
-
-  async function setup() {
-    let isSetup = await setupPlayer();
-    if (isSetup && activeTrack) {
-      await TrackPlayer.add(activeTrack);
-    } else {
-      await addTrack();
-    }
-  }
-
-  useEffect(() => {
-    setup();
-  }, []);
+  TrackPlayer.getQueue().then((res) => setqueue(res));
+  useEffect(() => {}, []);
 
   const y = useSharedValue(height + floatingPlayerHeight! + bottom);
 
@@ -159,13 +111,7 @@ export default function Player() {
       }
     })
     .onEnd((e) => {
-      if (
-        (localState === "minimized" && e.velocityY > 1000) ||
-        (localState === "minimized" &&
-          e.absoluteY > height - floatingPlayerHeight! / 2)
-      ) {
-        setlocalState("closed");
-      } else if (e.velocityY < -1000) {
+      if (e.velocityY < -1000) {
         setlocalState("maximized");
       } else if (e.velocityY > 1000) {
         setlocalState("minimized");
@@ -185,32 +131,55 @@ export default function Player() {
     })
     .runOnJS(true);
 
+  const [activestate, setactivestate] = useState<number>();
+  useTrackPlayerEvents(
+    [Event.MetadataCommonReceived, Event.PlaybackActiveTrackChanged],
+    async () => {
+      const res = await TrackPlayer.getActiveTrackIndex();
+      setactivestate(res);
+    },
+  );
+  const handlePlay = async (track: Track) => {
+    await TrackPlayer.add(track, activestate);
+    await TrackPlayer.skipToPrevious();
+    await TrackPlayer.play();
+  };
+
   return (
-    <>
-      <Animated.View
-        style={[animatedPlayerStyle]}
-        className="h-full w-full absolute bottom-0 left-0"
-      >
-        <GestureDetector gesture={maximiseHandler}>
-          <Animated.View
-            className="w-full h-full -top-20 relative"
-            style={{ backgroundColor: colors.background }}
-          >
-            <Pressable onPress={handleTap} className="z-10">
-              <Animated.View className="h-20" style={[floatingOpacity]}>
-                <FloatingPlayer track={track} />
-              </Animated.View>
-            </Pressable>
-            <Animated.View
-              className="h-full flex-1 items-center justify-center absolute"
-              style={[fullOpacity]}
-            >
-              <FullPlayer track={track} />
+    <Animated.View
+      style={[animatedPlayerStyle]}
+      className="h-full w-full absolute bottom-0 left-0"
+    >
+      <GestureDetector gesture={maximiseHandler}>
+        <Animated.View
+          className="w-full h-full -top-20 relative"
+          style={{ backgroundColor: colors.background }}
+        >
+          <Pressable onPress={handleTap} className="z-10">
+            <Animated.View className="h-20" style={[floatingOpacity]}>
+              <FloatingPlayer track={track} />
             </Animated.View>
-            <Queue />
+          </Pressable>
+          <Animated.View
+            className="h-full w-full flex-1 items-center justify-center absolute"
+            style={[fullOpacity]}
+          >
+            <FlatList
+              contentContainerStyle={{ paddingBottom: 80 }}
+              style={{ backgroundColor: colors.background }}
+              className="flex-1 h-full w-full"
+              data={queue}
+              renderItem={({ item }) => (
+                <Pressable onPress={() => handlePlay(item)}>
+                  <SongItem track={item} />
+                </Pressable>
+              )}
+              keyExtractor={(item) => item.id}
+              ItemSeparatorComponent={Divider}
+            />
           </Animated.View>
-        </GestureDetector>
-      </Animated.View>
-    </>
+        </Animated.View>
+      </GestureDetector>
+    </Animated.View>
   );
 }

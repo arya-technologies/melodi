@@ -29,7 +29,6 @@ export default function PlayerControls() {
     ({ track }) => {
       setisFab(musics.includes(track));
       setisLooped(false);
-      console.log(musics);
     },
   );
 
@@ -48,15 +47,16 @@ export default function PlayerControls() {
   };
   const handleFav = async () => {
     setisFab((prev) => !prev);
-    if (musics.includes(track)) {
-      dispatch(removeFavMusic(track));
-    } else {
+    if (!musics.includes(track)) {
       dispatch(addFavMusic(track));
+      console.log(musics);
+    } else {
+      dispatch(removeFavMusic(track));
     }
   };
   const handleLoop = async () => {
     setisLooped((prev) => !prev);
-    // TrackPlayer.setRepeatMode("Off");
+    TrackPlayer.setRepeatMode(isLooped ? RepeatMode.Track : RepeatMode.Queue);
   };
 
   // useEffect(() => {}, [isFab]);
@@ -78,7 +78,7 @@ export default function PlayerControls() {
       ) : (
         <IconButton
           icon={playing ? "pause" : "play"}
-          onPress={() => togglePlayback()}
+          onPress={togglePlayback}
           size={48}
           iconColor={colors.secondary}
           containerColor={colors.backdrop}
