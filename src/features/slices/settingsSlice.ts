@@ -86,28 +86,25 @@ export const settingsSlice = createSlice({
   name: "settings",
   initialState,
   reducers: {
-    setappearance: (state, { payload }: PayloadAction<AppearanceProps>) => {
-      state.appearance = {
-        colors: {
-          theme: payload.colors.theme,
-        },
-        typography: {
-          useSystemFont: payload.typography.useSystemFont,
-        },
-      };
+    setappearance: (
+      { appearance },
+      { payload }: PayloadAction<AppearanceProps>,
+    ) => {
+      appearance.colors.theme = payload.colors.theme;
+      appearance.typography.useSystemFont = payload.typography.useSystemFont;
     },
-    setPlayerHeight: (state, { payload }) => {
-      state.appearance.playerHeight = payload;
+    setPlayerHeight: ({ appearance }, { payload }) => {
+      appearance.playerHeight = payload;
     },
-    setcontrols: (state, { payload }: PayloadAction<ControlsProps>) => {
-      state.controls = {
+    setcontrols: ({ controls }, { payload }: PayloadAction<ControlsProps>) => {
+      controls = {
         player: {
           resumePlayback: payload.player.resumePlayback,
         },
       };
     },
-    setstorage: (state, { payload }: PayloadAction<StorageProps>) => {
-      state.storage = {
+    setstorage: ({ storage }, { payload }: PayloadAction<StorageProps>) => {
+      storage = {
         searchHistory: {
           isEnabled: payload.searchHistory.isEnabled,
           data: payload.searchHistory.data,
@@ -120,8 +117,8 @@ export const settingsSlice = createSlice({
         },
       };
     },
-    setothers: (state, { payload }: PayloadAction<OthersProps>) => {
-      state.others = {
+    setothers: ({ others }, { payload }: PayloadAction<OthersProps>) => {
+      others = {
         battery: {
           optimizationDisabled: payload.battery.optimizationDisabled,
         },

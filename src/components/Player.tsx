@@ -44,6 +44,7 @@ export default function Player() {
   const { floatingPlayerHeight } = useSelector(
     (state: RootState) => state.settings.appearance,
   );
+  console.log(floatingPlayerHeight);
 
   const [localState, setlocalState] = useState<localStateProps>(
     track ? "minimized" : "closed",
@@ -194,7 +195,7 @@ export default function Player() {
           className="w-full h-full -top-20 relative"
           style={{ backgroundColor: colors.background }}
         >
-          <Pressable onPress={handleTap} className="z-10">
+          <Pressable onPress={handleTap} className="">
             <Animated.View className="h-20" style={[floatingOpacity]}>
               <FloatingPlayer track={track} />
             </Animated.View>
