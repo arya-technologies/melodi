@@ -117,11 +117,11 @@ export default function Player() {
     ],
   }));
 
-  // const handleTap = () => {
-  //   if (localState === "minimized") {
-  //     setlocalState("maximized");
-  //   }
-  // };
+  const handleTap = () => {
+    if (localState === "minimized") {
+      setlocalState("maximized");
+    }
+  };
 
   const resetY = () => {
     if (localState === "minimized") {
@@ -184,14 +184,6 @@ export default function Player() {
     })
     .runOnJS(true);
 
-  const handleTap = Gesture.Tap()
-    .onEnd(() => {
-      if (localState === "minimized") {
-        setlocalState("maximized");
-      }
-    })
-    .runOnJS(true);
-
   return (
     <Animated.View
       style={[animatedPlayerStyle]}
@@ -202,14 +194,14 @@ export default function Player() {
           className="w-full h-full -top-20 relative"
           style={{ backgroundColor: colors.background }}
         >
-          <GestureDetector gesture={handleTap}>
+          <Pressable onPress={handleTap} className="z-10">
             <Animated.View className="h-20" style={[floatingOpacity]}>
               <FloatingPlayer track={track} />
             </Animated.View>
-          </GestureDetector>
+          </Pressable>
           <Animated.View
-            style={[fullOpacity]}
             className="h-full flex-1 items-center justify-center absolute"
+            style={[fullOpacity]}
           >
             <FullPlayer track={track} />
           </Animated.View>
