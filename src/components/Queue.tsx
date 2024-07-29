@@ -8,6 +8,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  runOnUI,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TrackPlayer, {
@@ -97,7 +98,7 @@ export default function Queue() {
 
   const maximiseHandler = Gesture.Pan()
     .onUpdate((e) => {
-      if (localState === "minimized") {
+      if (localState === "minimized" && e.translationY < -0) {
         y.value = e.absoluteY + floatingPlayerHeight!;
         (o.value = 0), (fo.value = 1);
       } else if (localState === "maximized" && e.translationY > 0) {
@@ -127,8 +128,8 @@ export default function Queue() {
           resetY();
         }
       }
-    });
-  // .runOnJS(true);
+    })
+    .runOnJS(true);
 
   const [activestate, setactivestate] = useState<number>();
   useTrackPlayerEvents(
