@@ -1,7 +1,7 @@
 import { RootState } from "@/app/store";
 import FloatingPlayer from "@/components/FloatingPlayer";
 import FullPlayer from "@/components/FullPlayer";
-import { setActiveTrack } from "@/features/slices/trackSlice";
+import { setActiveTrack } from "@/features/slices/queueSlice";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Dimensions, Linking } from "react-native";
@@ -42,7 +42,7 @@ export default function Player() {
   const { colors } = useAppTheme();
   const track: Track | undefined = useActiveTrack();
 
-  const { activeTrack } = useSelector((state: RootState) => state.track);
+  const { activeTrack } = useSelector((state: RootState) => state.queue);
   const { floatingPlayerHeight } = useSelector(
     (state: RootState) => state.settings.appearance,
   );
@@ -51,34 +51,20 @@ export default function Player() {
     track ? "minimized" : "closed",
   );
 
-  // TrackPlayer.addEventListener(
-  //   Event.PlaybackProgressUpdated,
-  //   ({ track, position }) => {
-  //     console.log(track, position);
-  //     // dispatch(
-  //     //   setActiveTrack({ activeTrack: track, activeTrackPosition: position }),
-  //     // );
-  //   },
-  // );
-
   TrackPlayer.addEventListener(Event.PlaybackState, ({ state }) => {
     if (state === "playing" && localState === "closed") {
-      // y.value = height - bottom;
-      // o.value = 1;
       setlocalState("minimized");
     } else if (state === "stopped") {
-      // y.value = height + floatingPlayerHeight! + bottom;
-      // o.value = 0;
       setlocalState("closed");
     }
   });
 
-  TrackPlayer.addEventListener(
-    Event.PlaybackActiveTrackChanged,
-    ({ track }) => {
-      dispatch(setActiveTrack({ activeTrack: track }));
-    },
-  );
+  // TrackPlayer.addEventListener(
+  //   Event.PlaybackActiveTrackChanged,
+  //   ({ track }) => {
+  //     dispatch(setActiveTrack({ activeTrack: track }));
+  //   },
+  // );
 
   async function setup() {
     let isSetup = await setupPlayer();
@@ -93,7 +79,6 @@ export default function Player() {
     setup();
   }, []);
 
-  // const y = useSharedValue(height + floatingPlayerHeight! + bottom);
   const y = useSharedValue(height);
 
   const o = useSharedValue(1);
@@ -200,7 +185,7 @@ export default function Player() {
             className="w-full h-full -top-20 relative"
             style={{ backgroundColor: colors.elevation.level1 }}
           >
-            <TouchableRipple onPress={handleTap} className="z-10">
+            <TouchableRipple borderless onPress={handleTap} className="z-10">
               <Animated.View
                 className="h-20"
                 style={[floatingOpacity, { paddingBottom: bottom }]}

@@ -3,7 +3,7 @@ import SongItem from "@/components/SongItem";
 import { playlistData } from "@/constants";
 import React, { useState } from "react";
 import { FlatList, Pressable } from "react-native";
-import { Divider } from "react-native-paper";
+import { Divider, TouchableRipple } from "react-native-paper";
 import TrackPlayer, {
   Event,
   Track,
@@ -47,13 +47,12 @@ export default function Explore() {
 
   return (
     <FlatList
-      contentContainerStyle={{ paddingBottom: 80 }}
       style={{ backgroundColor: colors.background }}
       data={playlistData}
       renderItem={({ item }) => (
-        <Pressable onPress={() => handlePlay(item)}>
+        <TouchableRipple onPress={() => handlePlay(item)}>
           <SongItem track={item} />
-        </Pressable>
+        </TouchableRipple>
       )}
       keyExtractor={(track) => track.id}
     />

@@ -12,12 +12,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { setappearance, ThemeProps } from "@/features/slices/settingsSlice";
-import { useMaterial3Theme } from "@pchmn/expo-material3-theme";
 
 export default function Appearance() {
   const dispatch = useDispatch();
   const { appearance } = useSelector((state: RootState) => state.settings);
-  const { artworkColors } = useSelector((state: RootState) => state.track);
 
   const [theme, settheme] = useState<ThemeProps>(appearance.colors.theme);
   const [isThemeDialogVisible, setisThemeDialogVisible] = useState(false);
@@ -28,8 +26,6 @@ export default function Appearance() {
     appearance.typography.useSystemFont,
   );
   const toggleIsSystemFontEnabled = () => setisUsingSystemFont((prev) => !prev);
-
-  const { updateTheme } = useMaterial3Theme();
 
   useEffect(() => {
     dispatch(

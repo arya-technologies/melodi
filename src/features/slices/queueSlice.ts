@@ -3,29 +3,35 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { ImageColorsResult } from "react-native-image-colors/lib/typescript/types";
 import { Track } from "react-native-track-player";
 
-export interface TrackState {
+export interface QueueState {
+  queue: Track[];
   activeTrack: Track | undefined;
   activeTrackPosition: number | undefined;
   artworkColors: ImageColorsResult | undefined;
 }
 
-const initialState: TrackState = {
+const initialState: QueueState = {
+  queue: [],
   activeTrack: undefined,
   activeTrackPosition: undefined,
   artworkColors: undefined,
 };
 
-export const trackSlice = createSlice({
-  name: "track",
+export const queueSlice = createSlice({
+  name: "queue",
   initialState,
   reducers: {
-    setActiveTrack: (state, actions: PayloadAction<TrackState>) => {
-      state.activeTrack = actions.payload.activeTrack;
-      state.activeTrackPosition = actions.payload.activeTrackPosition;
+    setQueue: (
+      { queue, activeTrack, activeTrackPosition, artworkColors },
+      { payload }: PayloadAction<QueueState>,
+    ) => {
+      queue = payload.queue;
+      activeTrack = payload.activeTrack;
+      activeTrackPosition = payload.activeTrackPosition;
 
-      let colors = actions.payload.artworkColors;
+      let colors = payload.artworkColors;
       if (colors?.platform === "ios") {
-        state.artworkColors = {
+        artworkColors = {
           dominant: colors.background,
           vibrant: colors.primary,
           average: colors.detail,
@@ -33,12 +39,12 @@ export const trackSlice = createSlice({
           lightMuted: colors.background,
         };
       } else if (colors?.platform === "android" || colors?.platform === "web") {
-        state.artworkColors = colors;
+        artworkColors = colors;
       }
     },
   },
 });
 
-export const { setActiveTrack } = trackSlice.actions;
+export const { setQueue } = queueSlice.actions;
 
-export default trackSlice.reducer;
+export default queueSlice.reducer;

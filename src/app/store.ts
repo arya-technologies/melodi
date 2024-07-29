@@ -1,5 +1,5 @@
 import settingsSlice from "@/features/slices/settingsSlice";
-import trackSlice from "@/features/slices/trackSlice";
+import queueSlice from "@/features/slices/queueSlice";
 import favSlice from "@/features/slices/favSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
@@ -16,13 +16,13 @@ import {
 import hardSet from "redux-persist/es/stateReconciler/hardSet";
 
 const settingsConfig = {
-  key: "track",
+  key: "settings",
   storage: AsyncStorage,
   stateReconciler: hardSet,
 };
 
-const trackConfig = {
-  key: "track",
+const queueConfig = {
+  key: "queue",
   storage: AsyncStorage,
   stateReconciler: hardSet,
 };
@@ -35,7 +35,7 @@ const favConfig = {
 
 const rootReducer = combineReducers({
   settings: persistReducer(settingsConfig, settingsSlice),
-  track: persistReducer(trackConfig, trackSlice),
+  queue: persistReducer(queueConfig, queueSlice),
   favourites: persistReducer(favConfig, favSlice),
 });
 

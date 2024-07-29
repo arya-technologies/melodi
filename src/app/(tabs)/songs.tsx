@@ -3,7 +3,6 @@ import SongItem from "@/components/SongItem";
 import { playlistData } from "@/constants";
 import React from "react";
 import { Pressable } from "react-native";
-import { Divider } from "react-native-paper";
 
 export default function Songs() {
   return (
@@ -14,7 +13,6 @@ export default function Songs() {
           <SongItem track={item} />
         </Pressable>
       )}
-      ItemSeparatorComponent={Divider}
     />
   );
 }
