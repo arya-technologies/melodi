@@ -1,6 +1,6 @@
 import { RootState } from "@/app/store";
 import React, { useEffect, useState } from "react";
-import { Dimensions, Pressable, View } from "react-native";
+import { Dimensions, FlatList, Pressable, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { Button, IconButton, Text, Icon } from "react-native-paper";
 import Animated, {
@@ -19,6 +19,7 @@ import TrackPlayer, {
 } from "react-native-track-player";
 import { useDispatch, useSelector } from "react-redux";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
+import SongItem from "./SongItem";
 
 type localStateProps = "minimized" | "maximized";
 
@@ -35,7 +36,9 @@ export default function Queue() {
   const [localState, setlocalState] = useState<localStateProps>("minimized");
   const [queue, setqueue] = useState<Track[]>();
 
-  // TrackPlayer.getQueue().then((res) => setqueue(res));
+  useEffect(() => {
+    TrackPlayer.getQueue().then((res) => setqueue(res));
+  }, [track]);
 
   const y = useSharedValue(height + floatingPlayerHeight! + bottom);
 
@@ -152,7 +155,12 @@ export default function Queue() {
         >
           <Pressable onPress={handleTap} className="z-10">
             <Animated.View
-              style={[floatingOpacity, { height: floatingPlayerHeight }]}
+              style={[
+                floatingOpacity,
+                {
+                  height: floatingPlayerHeight,
+                },
+              ]}
               className="relative flex-row items-center justify-center"
             >
               <Icon source="layers" size={24} />
@@ -165,10 +173,28 @@ export default function Queue() {
             className="h-full w-full flex-1 items-center justify-center absolute"
             style={[fullOpacity]}
           >
+            <FlatList
+              contentContainerStyle={{
+                paddingBottom: floatingPlayerHeight! + bottom,
+                paddingTop: top,
+              }}
+              className="flex-1 h-full w-full"
+              data={queue}
+              renderItem={({ item }) => (
+                <Pressable onPress={() => handlePlay(item)}>
+                  <SongItem track={item} />
+                </Pressable>
+              )}
+              keyExtractor={(item) => item.id}
+            />
             <Pressable
               onPress={handleTapClose}
               className="absolute w-full bottom-0"
-              style={{ height: floatingPlayerHeight, paddingBottom: bottom }}
+              style={{
+                height: floatingPlayerHeight,
+                paddingBottom: bottom,
+                backgroundColor: colors.elevation.level3,
+              }}
             >
               <View className="relative flex-row items-center justify-center z-10 h-full">
                 <Icon source="arrow-down" size={24} />
@@ -184,18 +210,3 @@ export default function Queue() {
     </Animated.View>
   );
 }
-// <FlatList
-//   contentContainerStyle={{
-//     paddingBottom: floatingPlayerHeight! + bottom,
-//     paddingTop: top,
-//   }}
-//   style={{ backgroundColor: colors.background }}
-//   className="flex-1 h-full w-full"
-//   data={queue}
-//   renderItem={({ item }) => (
-//     <Pressable onPress={() => handlePlay(item)}>
-//       <SongItem track={item} />
-//     </Pressable>
-//   )}
-//   keyExtractor={(item) => item.id}
-// />
