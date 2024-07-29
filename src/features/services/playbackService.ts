@@ -39,7 +39,7 @@ export async function addTrack() {
   // await TrackPlayer.setRepeatMode(RepeatMode.Queue);
 }
 
-export async function playbackService() {
+export default async function playbackService() {
   TrackPlayer.addEventListener(Event.RemotePause, () => {
     TrackPlayer.pause();
   });

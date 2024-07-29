@@ -1,6 +1,5 @@
 import { persistor, store } from "@/app/store";
 import Player from "@/components/Player";
-import Queue from "@/components/Queue";
 import { Material3ThemeProvider } from "@/components/providers/Material3ThemeProvider";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as NavigationBar from "expo-navigation-bar";
@@ -10,7 +9,7 @@ import { ActivityIndicator } from "react-native-paper";
 import TrackPlayer from "react-native-track-player";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { playbackService } from "rntp-service";
+import playbackService from "@/features/services/playbackService";
 
 // SplashScreen.preventAutoHideAsync();
 

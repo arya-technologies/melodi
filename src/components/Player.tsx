@@ -1,7 +1,6 @@
 import { RootState } from "@/app/store";
 import FloatingPlayer from "@/components/FloatingPlayer";
 import FullPlayer from "@/components/FullPlayer";
-import { setActiveTrack } from "@/features/slices/queueSlice";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Dimensions, Linking } from "react-native";
@@ -20,7 +19,7 @@ import TrackPlayer, {
   useActiveTrack,
 } from "react-native-track-player";
 import { useDispatch, useSelector } from "react-redux";
-import { addTrack, setupPlayer } from "rntp-service";
+import { addTrack, setupPlayer } from "@/features/services/playbackService";
 import Queue from "./Queue";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
 
