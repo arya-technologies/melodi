@@ -2,7 +2,13 @@ import { RootState } from "@/app/store";
 import React, { useEffect, useState } from "react";
 import { Dimensions, FlatList, Pressable, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { Button, Icon, IconButton, Text } from "react-native-paper";
+import {
+  Button,
+  Icon,
+  IconButton,
+  Text,
+  TouchableRipple,
+} from "react-native-paper";
 import Animated, {
   ReduceMotion,
   useAnimatedStyle,
@@ -19,7 +25,6 @@ import TrackPlayer, {
 import { useSelector } from "react-redux";
 import SongItem from "./SongItem";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
-import { getActiveTrackIndex } from "react-native-track-player/lib/src/trackPlayer";
 
 type localStateProps = "minimized" | "maximized";
 
@@ -161,7 +166,7 @@ export default function Queue() {
           className="w-full h-full -top-20 relative"
           style={{ backgroundColor: colors.elevation.level3 }}
         >
-          <Pressable onPress={handleTap} className="z-10">
+          <TouchableRipple onPress={handleTap} className="z-10">
             <Animated.View
               style={[
                 floatingOpacity,
@@ -174,7 +179,7 @@ export default function Queue() {
                 <IconButton icon="ellipsis-vertical" size={24} />
               </View>
             </Animated.View>
-          </Pressable>
+          </TouchableRipple>
           <Animated.View
             className="h-full w-full flex-1 items-center justify-center absolute"
             style={[fullOpacity, { backgroundColor: colors.background }]}
@@ -193,7 +198,7 @@ export default function Queue() {
               )}
               keyExtractor={(item) => item.id}
             />
-            <Pressable
+            <TouchableRipple
               onPress={handleTapClose}
               className="absolute w-full bottom-0"
               style={{
@@ -209,7 +214,7 @@ export default function Queue() {
                   <Button mode="elevated">Queue Loop</Button>
                 </View>
               </View>
-            </Pressable>
+            </TouchableRipple>
           </Animated.View>
         </Animated.View>
       </GestureDetector>

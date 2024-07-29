@@ -2,9 +2,11 @@ import { RootState } from "@/app/store";
 import FloatingPlayer from "@/components/FloatingPlayer";
 import FullPlayer from "@/components/FullPlayer";
 import { setActiveTrack } from "@/features/slices/trackSlice";
+import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Dimensions, Linking, Pressable, View } from "react-native";
+import { Dimensions, Linking } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { TouchableRipple } from "react-native-paper";
 import Animated, {
   ReduceMotion,
   useAnimatedStyle,
@@ -19,9 +21,8 @@ import TrackPlayer, {
 } from "react-native-track-player";
 import { useDispatch, useSelector } from "react-redux";
 import { addTrack, setupPlayer } from "rntp-service";
-import { useAppTheme } from "./providers/Material3ThemeProvider";
-import { useRouter } from "expo-router";
 import Queue from "./Queue";
+import { useAppTheme } from "./providers/Material3ThemeProvider";
 
 type localStateProps = "minimized" | "maximized" | "closed";
 
@@ -198,14 +199,14 @@ export default function Player() {
             className="w-full h-full -top-20 relative"
             style={{ backgroundColor: colors.elevation.level1 }}
           >
-            <Pressable onPress={handleTap} className="z-10">
+            <TouchableRipple onPress={handleTap} className="z-10">
               <Animated.View
                 className="h-20"
                 style={[floatingOpacity, { paddingBottom: bottom }]}
               >
                 <FloatingPlayer track={track} />
               </Animated.View>
-            </Pressable>
+            </TouchableRipple>
             <Animated.View
               className="h-full flex-1 items-center justify-center absolute"
               style={[fullOpacity, { paddingBottom: bottom }]}
