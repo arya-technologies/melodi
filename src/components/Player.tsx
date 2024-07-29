@@ -207,7 +207,7 @@ export default function Player() {
             >
               <FullPlayer track={track} />
             </Animated.View>
-            {/* <Queue /> */}
+            <Queue />
           </Animated.View>
         </GestureDetector>
       </Animated.View>

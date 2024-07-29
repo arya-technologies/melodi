@@ -35,7 +35,7 @@ export default function Queue() {
   const [localState, setlocalState] = useState<localStateProps>("minimized");
   const [queue, setqueue] = useState<Track[]>();
 
-  TrackPlayer.getQueue().then((res) => setqueue(res));
+  // TrackPlayer.getQueue().then((res) => setqueue(res));
 
   const y = useSharedValue(height + floatingPlayerHeight! + bottom);
 
@@ -65,7 +65,6 @@ export default function Queue() {
   }));
 
   const handleTap = () => {
-    console.log(localState);
     if (localState === "minimized") {
       setlocalState("maximized");
     }
@@ -86,11 +85,6 @@ export default function Queue() {
       y.value = floatingPlayerHeight!;
       o.value = 0;
       fo.value = 1;
-    } else if (localState === "closed") {
-      TrackPlayer.reset();
-      y.value = height + floatingPlayerHeight! + bottom;
-      o.value = 0;
-      fo.value = 0;
     }
   };
   useEffect(() => {

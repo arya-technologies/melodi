@@ -52,8 +52,8 @@ export default function RootLayout() {
               }}
               initialRouteName="(tabs)"
             />
-            {/* <Player /> */}
-            <Queue />
+            <Player />
+            {/* <Queue /> */}
           </GestureHandlerRootView>
         </Material3ThemeProvider>
       </PersistGate>
