@@ -63,12 +63,13 @@ export default function Player() {
 
   TrackPlayer.addEventListener(Event.PlaybackState, ({ state }) => {
     if (state === "playing" && localState === "closed") {
-      y.value = height - bottom;
-      o.value = 1;
+      // y.value = height - bottom;
+      // o.value = 1;
       setlocalState("minimized");
     } else if (state === "stopped") {
-      y.value = height + floatingPlayerHeight! + bottom;
-      o.value = 0;
+      // y.value = height + floatingPlayerHeight! + bottom;
+      // o.value = 0;
+      setlocalState("closed");
     }
   });
 
@@ -93,7 +94,7 @@ export default function Player() {
   }, []);
 
   // const y = useSharedValue(height + floatingPlayerHeight! + bottom);
-  const y = useSharedValue(height + floatingPlayerHeight!);
+  const y = useSharedValue(height);
 
   const o = useSharedValue(1);
   const floatingOpacity = useAnimatedStyle(() => ({

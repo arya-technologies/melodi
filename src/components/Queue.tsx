@@ -18,6 +18,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TrackPlayer, {
   Event,
+  RepeatMode,
   Track,
   useActiveTrack,
   useTrackPlayerEvents,
@@ -40,9 +41,13 @@ export default function Queue() {
 
   const [localState, setlocalState] = useState<localStateProps>("minimized");
   const [queue, setqueue] = useState<Track[]>();
+  const [isQueueOn, setisQueueOn] = useState<boolean>();
 
   useEffect(() => {
     TrackPlayer.getQueue().then((res) => setqueue(res));
+    TrackPlayer.getRepeatMode().then((mode) =>
+      setisQueueOn(mode === RepeatMode.Queue ? true : false),
+    );
   }, [track]);
 
   // const y = useSharedValue(height + floatingPlayerHeight! + bottom);
@@ -135,18 +140,6 @@ export default function Queue() {
     })
     .runOnJS(true);
 
-  const [activestate, setactivestate] = useState<number>();
-  useTrackPlayerEvents(
-    [Event.MetadataCommonReceived, Event.PlaybackActiveTrackChanged],
-    async () => {
-      TrackPlayer.getActiveTrackIndex().then((res) => setactivestate(res));
-    },
-  );
-  // const handlePlay = async (track: Track) => {
-  //   await TrackPlayer.add(track, activestate);
-  //   await TrackPlayer.skipToPrevious();
-  //   await TrackPlayer.play();
-  // };
   const handlePlay = async (track: Track) => {
     const alreadyInQueue = queue?.find((item) => item.id === track.id);
     if (!alreadyInQueue) {
@@ -154,6 +147,11 @@ export default function Queue() {
         TrackPlayer.skip(index).then(() => TrackPlayer.play()),
       );
     }
+  };
+
+  const toggleRepeatMode = () => {
+    setisQueueOn((prev) => !prev);
+    TrackPlayer.setRepeatMode(isQueueOn ? RepeatMode.Queue : RepeatMode.Off);
   };
 
   return (
@@ -210,8 +208,10 @@ export default function Queue() {
               <View className="relative flex-row items-center justify-center z-10 h-full">
                 <Icon source="arrow-down" size={24} />
                 <View className="absolute flex-row w-full h-full items-center justify-between px-4">
-                  <Text>{queue?.length}</Text>
-                  <Button mode="elevated">Queue Loop</Button>
+                  <Button mode="text">{queue?.length} Songs</Button>
+                  <Button mode="elevated" onPress={toggleRepeatMode}>
+                    Queue Loop {isQueueOn ? "On" : "Off"}
+                  </Button>
                 </View>
               </View>
             </TouchableRipple>

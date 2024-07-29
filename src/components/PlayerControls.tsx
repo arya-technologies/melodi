@@ -21,13 +21,13 @@ export default function PlayerControls() {
 
   const { musics } = useSelector((state: RootState) => state.favourites);
 
-  const [isFab, setisFab] = useState<boolean>(musics.includes(track));
+  const [isFab, setisFab] = useState<boolean>(musics.includes(track!));
   const [isLooped, setisLooped] = useState(false);
   //
   TrackPlayer.addEventListener(
     Event.PlaybackActiveTrackChanged,
     ({ track }) => {
-      setisFab(musics.includes(track));
+      setisFab(musics.includes(track!));
       setisLooped(false);
     },
   );
@@ -47,11 +47,10 @@ export default function PlayerControls() {
   };
   const handleFav = async () => {
     setisFab((prev) => !prev);
-    if (!musics.includes(track)) {
-      dispatch(addFavMusic(track));
-      console.log(musics);
+    if (!musics.includes(track!)) {
+      dispatch(addFavMusic(track!));
     } else {
-      dispatch(removeFavMusic(track));
+      dispatch(removeFavMusic(track!));
     }
   };
   const handleLoop = async () => {

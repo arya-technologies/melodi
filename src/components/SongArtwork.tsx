@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useState } from "react";
 import { Image, Pressable, View } from "react-native";
-import { Text } from "react-native-paper";
+import { Text, TouchableRipple } from "react-native-paper";
 import { Track } from "react-native-track-player";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
 import Animated, {
@@ -38,11 +38,11 @@ export default function SongArtwork({ track }: SongArtwordProps) {
   };
 
   return (
-    <View
-      className="w-[85vw] h-[85vw] overflow-hidden relative"
-      style={{ borderRadius: theme.roundness }}
-    >
-      <Pressable onLongPress={handleBgOpacity}>
+    <TouchableRipple onLongPress={handleBgOpacity}>
+      <View
+        className="w-[85vw] h-[85vw] overflow-hidden relative"
+        style={{ borderRadius: theme.roundness }}
+      >
         <Image
           source={{
             uri:
@@ -52,40 +52,14 @@ export default function SongArtwork({ track }: SongArtwordProps) {
           className="w-full h-full"
         />
         <Animated.View
-          className="absolute w-full h-full flex-1 items-center justify-center"
-          style={[
-            animatedBgOpacity,
-            { backgroundColor: theme.colors.background + "CC" },
-          ]}
+          className="absolute w-full h-full flex-1 items-center justify-center z-10"
+          style={[animatedBgOpacity, { backgroundColor: "#000000CC" }]}
         >
           <View>
-            <Text
-              style={{ color: theme.colors.primary }}
-              className="text-lg font-bold"
-            >
-              Title: {track?.title}
-            </Text>
-            <Text
-              className="text-lg font-bold"
-              style={{ color: theme.colors.primary }}
-            >
-              Artist: {track?.artist}
-            </Text>
-            <Text
-              className="text-lg font-bold"
-              style={{ color: theme.colors.primary }}
-            >
-              Type: {track?.type}
-            </Text>
-            <Text
-              className="text-lg font-bold"
-              style={{ color: theme.colors.primary }}
-            >
-              Genre: {track?.genre}
-            </Text>
+            <Text className="text-lg font-bold">Id: {track?.id}</Text>
           </View>
         </Animated.View>
-      </Pressable>
-    </View>
+      </View>
+    </TouchableRipple>
   );
 }
