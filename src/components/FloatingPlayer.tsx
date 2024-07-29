@@ -34,7 +34,6 @@ export default function FloatingPlayer({ track }: FloatingPlayerProps) {
   };
 
   const { position, duration } = useProgress();
-  const { width } = Dimensions.get("screen");
 
   if (track) {
     return (

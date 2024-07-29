@@ -23,21 +23,26 @@ export default function Explore() {
     // console.log(music);
   };
 
-  const [activestate, setactivestate] = useState<number>();
+  // const [activestate, setactivestate] = useState<number>();
+  const [queue, setqueue] = useState<Track[]>();
 
   useTrackPlayerEvents(
     [Event.MetadataCommonReceived, Event.PlaybackActiveTrackChanged],
     async () => {
-      const res = await TrackPlayer.getActiveTrackIndex();
-      setactivestate(res);
+      // TrackPlayer.getActiveTrackIndex().then((res) => setactivestate(res));
+      TrackPlayer.getQueue().then((res) => setqueue(res));
     },
   );
 
-  //TODO: Fix this
   const handlePlay = async (track: Track) => {
-    await TrackPlayer.add(track, activestate);
-    await TrackPlayer.skipToPrevious();
-    await TrackPlayer.play();
+    const alreadyInQueue = queue?.findIndex((item) => item.id === track.id);
+    if (alreadyInQueue !== -1) {
+      TrackPlayer.skip(alreadyInQueue!).then(() => TrackPlayer.play());
+    } else if (alreadyInQueue === -1) {
+      TrackPlayer.add(track).then((index: any) =>
+        TrackPlayer.skip(index).then(() => TrackPlayer.play()),
+      );
+    }
   };
 
   return (
@@ -50,7 +55,6 @@ export default function Explore() {
           <SongItem track={item} />
         </Pressable>
       )}
-      ItemSeparatorComponent={Divider}
       keyExtractor={(track) => track.id}
     />
   );

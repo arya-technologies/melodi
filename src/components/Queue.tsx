@@ -2,13 +2,12 @@ import { RootState } from "@/app/store";
 import React, { useEffect, useState } from "react";
 import { Dimensions, FlatList, Pressable, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { Button, IconButton, Text, Icon } from "react-native-paper";
+import { Button, Icon, IconButton, Text } from "react-native-paper";
 import Animated, {
   ReduceMotion,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
-  runOnUI,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TrackPlayer, {
@@ -17,9 +16,10 @@ import TrackPlayer, {
   useActiveTrack,
   useTrackPlayerEvents,
 } from "react-native-track-player";
-import { useDispatch, useSelector } from "react-redux";
-import { useAppTheme } from "./providers/Material3ThemeProvider";
+import { useSelector } from "react-redux";
 import SongItem from "./SongItem";
+import { useAppTheme } from "./providers/Material3ThemeProvider";
+import { getActiveTrackIndex } from "react-native-track-player/lib/src/trackPlayer";
 
 type localStateProps = "minimized" | "maximized";
 
@@ -40,7 +40,8 @@ export default function Queue() {
     TrackPlayer.getQueue().then((res) => setqueue(res));
   }, [track]);
 
-  const y = useSharedValue(height + floatingPlayerHeight! + bottom);
+  // const y = useSharedValue(height + floatingPlayerHeight! + bottom);
+  const y = useSharedValue(height + floatingPlayerHeight!);
 
   const o = useSharedValue(1);
   const floatingOpacity = useAnimatedStyle(() => ({
@@ -81,7 +82,7 @@ export default function Queue() {
 
   const resetY = () => {
     if (localState === "minimized") {
-      y.value = height - bottom;
+      y.value = height;
       o.value = 1;
       fo.value = 0;
     } else if (localState === "maximized") {
@@ -133,14 +134,21 @@ export default function Queue() {
   useTrackPlayerEvents(
     [Event.MetadataCommonReceived, Event.PlaybackActiveTrackChanged],
     async () => {
-      const res = await TrackPlayer.getActiveTrackIndex();
-      setactivestate(res);
+      TrackPlayer.getActiveTrackIndex().then((res) => setactivestate(res));
     },
   );
+  // const handlePlay = async (track: Track) => {
+  //   await TrackPlayer.add(track, activestate);
+  //   await TrackPlayer.skipToPrevious();
+  //   await TrackPlayer.play();
+  // };
   const handlePlay = async (track: Track) => {
-    await TrackPlayer.add(track, activestate);
-    await TrackPlayer.skipToPrevious();
-    await TrackPlayer.play();
+    const alreadyInQueue = queue?.find((item) => item.id === track.id);
+    if (!alreadyInQueue) {
+      TrackPlayer.add(track).then((index: any) =>
+        TrackPlayer.skip(index).then(() => TrackPlayer.play()),
+      );
+    }
   };
 
   return (
@@ -151,15 +159,13 @@ export default function Queue() {
       <GestureDetector gesture={maximiseHandler}>
         <Animated.View
           className="w-full h-full -top-20 relative"
-          style={{ backgroundColor: colors.background }}
+          style={{ backgroundColor: colors.elevation.level3 }}
         >
           <Pressable onPress={handleTap} className="z-10">
             <Animated.View
               style={[
                 floatingOpacity,
-                {
-                  height: floatingPlayerHeight,
-                },
+                { height: floatingPlayerHeight, paddingBottom: bottom },
               ]}
               className="relative flex-row items-center justify-center"
             >
@@ -171,7 +177,7 @@ export default function Queue() {
           </Pressable>
           <Animated.View
             className="h-full w-full flex-1 items-center justify-center absolute"
-            style={[fullOpacity]}
+            style={[fullOpacity, { backgroundColor: colors.background }]}
           >
             <FlatList
               contentContainerStyle={{

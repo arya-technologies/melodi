@@ -91,7 +91,8 @@ export default function Player() {
     setup();
   }, []);
 
-  const y = useSharedValue(height + floatingPlayerHeight! + bottom);
+  // const y = useSharedValue(height + floatingPlayerHeight! + bottom);
+  const y = useSharedValue(height + floatingPlayerHeight!);
 
   const o = useSharedValue(1);
   const floatingOpacity = useAnimatedStyle(() => ({
@@ -126,7 +127,8 @@ export default function Player() {
 
   const resetY = () => {
     if (localState === "minimized") {
-      y.value = height - bottom;
+      // y.value = height - bottom;
+      y.value = height;
       o.value = 1;
       fo.value = 0;
     } else if (localState === "maximized") {
@@ -194,10 +196,13 @@ export default function Player() {
         <GestureDetector gesture={maximiseHandler}>
           <Animated.View
             className="w-full h-full -top-20 relative"
-            style={{ backgroundColor: colors.background }}
+            style={{ backgroundColor: colors.elevation.level1 }}
           >
             <Pressable onPress={handleTap} className="z-10">
-              <Animated.View className="h-20" style={[floatingOpacity]}>
+              <Animated.View
+                className="h-20"
+                style={[floatingOpacity, { paddingBottom: bottom }]}
+              >
                 <FloatingPlayer track={track} />
               </Animated.View>
             </Pressable>

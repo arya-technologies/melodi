@@ -1,9 +1,9 @@
-import React from "react";
-import { Track } from "react-native-track-player";
+import React, { useEffect, useState } from "react";
+import TrackPlayer, { Track, useActiveTrack } from "react-native-track-player";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
-import View from "./View";
+// import View from "./View";
 import { Text } from "react-native-paper";
-import { Image } from "react-native";
+import { Image, View } from "react-native";
 
 type SongItemsProps = {
   track: Track | undefined;
@@ -11,9 +11,21 @@ type SongItemsProps = {
 
 export default function SongItem({ track }: SongItemsProps) {
   const { colors } = useAppTheme();
+  const [queue, setqueue] = useState<Track[]>();
+  const alreadyInQueue = queue?.find((item) => item.id === track?.id);
+
+  useEffect(() => {
+    TrackPlayer.getQueue().then((res) => setqueue(res));
+    console.log(alreadyInQueue);
+  }, [track]);
 
   return (
-    <View className="flex-row items-center px-4 py-2">
+    <View
+      className="flex-row items-center px-4 py-2"
+      style={{
+        backgroundColor: track === alreadyInQueue ? colors.primary : "",
+      }}
+    >
       <Image
         source={{ uri: track?.artwork }}
         className="h-14 w-14 rounded-md"
