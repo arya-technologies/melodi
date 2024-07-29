@@ -8,10 +8,28 @@ import Albums from "./albums";
 import Artists from "./artists";
 import Playlists from "./playlists";
 import Songs from "./songs";
+import TrackPlayer, { Event, Track } from "react-native-track-player";
+import { useDispatch } from "react-redux";
+import { setQueue } from "react-native-track-player/lib/src/trackPlayer";
+import { setActiveTrack } from "@/features/slices/queueSlice";
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function TabLayout() {
+  const dispatch = useDispatch();
+
+  TrackPlayer.addEventListener(
+    Event.PlaybackProgressUpdated,
+    ({ track, position }) => {
+      dispatch(
+        setActiveTrack({ activeTrack: track, activeTrackPosition: position }),
+      );
+    },
+  );
+  TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, () => {
+    TrackPlayer.getQueue().then((queue: any) => dispatch(setQueue(queue)));
+  });
+
   return (
     <>
       <Appbar.Header mode="small">

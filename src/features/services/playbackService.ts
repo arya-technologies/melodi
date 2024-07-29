@@ -6,7 +6,7 @@ import TrackPlayer, {
   Event,
   RepeatMode,
 } from "react-native-track-player";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export async function setupPlayer() {
   let isSetup = false;
@@ -16,6 +16,7 @@ export async function setupPlayer() {
   } catch (error) {
     await TrackPlayer.setupPlayer();
     await TrackPlayer.updateOptions({
+      progressUpdateEventInterval: 10,
       android: {
         appKilledPlaybackBehavior: AppKilledPlaybackBehavior.ContinuePlayback,
       },

@@ -5,7 +5,7 @@ import { Track } from "react-native-track-player";
 
 export interface QueueState {
   queue: Track[];
-  activeTrack: Track | undefined;
+  activeTrack: number | undefined;
   activeTrackPosition: number | undefined;
   artworkColors: ImageColorsResult | undefined;
 }
@@ -21,11 +21,13 @@ export const queueSlice = createSlice({
   name: "queue",
   initialState,
   reducers: {
-    setQueue: (
-      { queue, activeTrack, activeTrackPosition, artworkColors },
+    setQueue: ({ queue }, { payload }) => {
+      queue = payload;
+    },
+    setActiveTrack: (
+      { activeTrack, activeTrackPosition, artworkColors },
       { payload }: PayloadAction<QueueState>,
     ) => {
-      queue = payload.queue;
       activeTrack = payload.activeTrack;
       activeTrackPosition = payload.activeTrackPosition;
 
@@ -45,6 +47,6 @@ export const queueSlice = createSlice({
   },
 });
 
-export const { setQueue } = queueSlice.actions;
+export const { setQueue, setActiveTrack } = queueSlice.actions;
 
 export default queueSlice.reducer;
