@@ -65,6 +65,7 @@ export default function Queue() {
   }));
 
   const handleTap = () => {
+    console.log(localState);
     if (localState === "minimized") {
       setlocalState("maximized");
     }
@@ -155,10 +156,10 @@ export default function Queue() {
           className="w-full h-full -top-20 relative"
           style={{ backgroundColor: colors.background }}
         >
-          <Pressable onPress={handleTap}>
+          <Pressable onPress={handleTap} className="z-10">
             <Animated.View
               style={[floatingOpacity, { height: floatingPlayerHeight }]}
-              className="relative flex-row items-center justify-center z-10"
+              className="relative flex-row items-center justify-center"
             >
               <Icon source="layers" size={24} />
               <View className="absolute flex-row w-full h-full items-center justify-end">
