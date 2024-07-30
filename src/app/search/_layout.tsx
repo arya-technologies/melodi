@@ -18,6 +18,13 @@ export default function SettingsLayout() {
           placeholder="Search anything"
           value={searchQuery}
           onChangeText={setsearchQuery}
+          className="w-48 m-0"
+        />
+        <Appbar.Action
+          onPress={() => {
+            router.back();
+          }}
+          icon="arrow-back"
         />
       </Appbar.Header>
       <Slot />

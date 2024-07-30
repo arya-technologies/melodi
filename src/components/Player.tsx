@@ -43,7 +43,9 @@ export default function Player() {
   const { colors } = useAppTheme();
   const track: Track | undefined = useActiveTrack();
 
-  const { activeTrack } = useSelector((state: RootState) => state.queue);
+  const { queue, activeTrack, activeTrackPosition } = useSelector(
+    (state: RootState) => state.queue,
+  );
   const { floatingPlayerHeight, floatingPlayerPosition } = useSelector(
     (state: RootState) => state.settings.appearance,
   );
@@ -51,6 +53,25 @@ export default function Player() {
   const [localState, setlocalState] = useState<localStateProps>(
     track ? "minimized" : "closed",
   );
+
+  async function setup() {
+    let isSetup = await setupPlayer();
+    if (isSetup && queue) {
+      console.log(activeTrack, activeTrackPosition);
+      TrackPlayer.setQueue(queue).then(() => {
+        if (activeTrack) {
+          TrackPlayer.skip(activeTrack!, activeTrackPosition);
+        }
+      });
+    } else {
+      // await addTrack();
+      console.log("no queue in redux");
+    }
+  }
+
+  useEffect(() => {
+    setup();
+  }, []);
 
   useTrackPlayerEvents([Event.PlaybackState], ({ state }) => {
     if (state === "playing" && localState === "closed") {
@@ -66,19 +87,6 @@ export default function Player() {
   //     dispatch(setActiveTrack({ activeTrack: track }));
   //   },
   // );
-
-  async function setup() {
-    let isSetup = await setupPlayer();
-    if (isSetup && activeTrack) {
-      // await TrackPlayer.add(activeTrack);
-    } else {
-      await addTrack();
-    }
-  }
-
-  useEffect(() => {
-    setup();
-  }, []);
 
   const y = useSharedValue(height);
 
@@ -140,8 +148,8 @@ export default function Player() {
         y.value = e.absoluteY + floatingPlayerHeight!;
         (o.value = 0), (fo.value = 1);
         if (e.absoluteY > height - floatingPlayerHeight!) {
-          // console.log(-e.absoluteY - height);
-          // dispatch(setFloatingPlayerPosition(-e.absoluteY - height));
+          // console.log(e.absoluteY - height);
+          // dispatch(setFloatingPlayerPosition(e.absoluteY - height));
           // console.log(floatingPlayerPosition);
         }
       } else if (localState === "maximized" && e.translationY > 0) {

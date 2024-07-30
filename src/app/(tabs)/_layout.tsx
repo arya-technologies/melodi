@@ -3,7 +3,7 @@ import { setActiveTrack, setQueue } from "@/features/slices/queueSlice";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { router } from "expo-router";
 import React from "react";
-import { Appbar, FAB } from "react-native-paper";
+import { Appbar, FAB, Text } from "react-native-paper";
 import TrackPlayer, {
   Event,
   Track,
@@ -44,6 +44,10 @@ export default function TabLayout() {
       dispatch(setcontrols({ player: { repeatMode: mode } })),
     );
   });
+
+  const { floatingPlayerPosition } = useSelector(
+    (state: RootState) => state.settings.appearance,
+  );
 
   return (
     <>
@@ -87,11 +91,11 @@ export default function TabLayout() {
         icon="search"
         style={{
           position: "absolute",
-          margin: 8,
+          margin: 16,
           right: 0,
           bottom: track! ? floatingPlayerHeight! : 0,
         }}
-        onPress={() => console.log("search triggered")}
+        onPress={() => router.push("search")}
       />
     </>
   );

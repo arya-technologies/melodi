@@ -9,12 +9,12 @@ export default function TabLayout() {
   return (
     <Tab.Navigator tabBar={TabBar} initialRouteName="appearance">
       <Tab.Screen
-        name="Appearance"
+        name="Online"
         component={Online}
         options={{ tabBarIcon: "color-palette" }}
       />
       <Tab.Screen
-        name="Controls"
+        name="Local"
         component={Local}
         options={{ tabBarIcon: "construct" }}
       />

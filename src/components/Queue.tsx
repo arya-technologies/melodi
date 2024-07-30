@@ -36,7 +36,6 @@ export default function Queue() {
     (state: RootState) => state.settings.controls.player,
   );
   const { queue } = useSelector((state: RootState) => state.queue);
-  console.log(queue);
 
   const [localState, setlocalState] = useState<localStateProps>("minimized");
   // const [queue, setqueue] = useState<Track[]>();
@@ -142,6 +141,7 @@ export default function Queue() {
     .runOnJS(true);
 
   const handlePlay = (track: Track) => {
+    console.log(queue);
     const alreadyInQueue = queue?.find((item) => item.id === track.id);
     if (!alreadyInQueue) {
       TrackPlayer.add(track).then((index: any) =>
@@ -186,15 +186,15 @@ export default function Queue() {
           >
             <FlatList
               contentContainerStyle={{
-                paddingBottom: floatingPlayerHeight! + bottom,
                 paddingTop: top,
+                paddingBottom: track ? floatingPlayerHeight! : bottom,
               }}
               className="flex-1 h-full w-full"
               data={queue}
               renderItem={({ item }) => (
-                <Pressable onPress={() => handlePlay(item)}>
+                <TouchableRipple onPress={() => handlePlay(item)}>
                   <SongItem track={item} />
-                </Pressable>
+                </TouchableRipple>
               )}
               keyExtractor={(item) => item.id}
             />

@@ -10,7 +10,7 @@ import TrackPlayer from "react-native-track-player";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import playbackService from "@/features/services/playbackService";
-import { useEffect } from "react";
+import { createContext, useEffect } from "react";
 
 // SplashScreen.preventAutoHideAsync();
 
@@ -37,6 +37,8 @@ export default function RootLayout() {
     NavigationBar.setBackgroundColorAsync("#00000000");
   }, []);
 
+  const FloatingPlayerPositionContext = createContext<number>(0);
+
   return (
     <Provider store={store}>
       <PersistGate loading={<ActivityIndicator />} persistor={persistor}>
@@ -49,7 +51,7 @@ export default function RootLayout() {
             <Stack
               screenOptions={{
                 gestureEnabled: true,
-                animation: "ios",
+                animation: "default",
                 headerShown: false,
               }}
               initialRouteName="(tabs)"

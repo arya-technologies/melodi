@@ -33,7 +33,7 @@ export default function Flatlist({
     <NativeFlatlist
       {...props}
       contentContainerStyle={{
-        paddingBottom: bottom + (track! ? floatingPlayerHeight! : 0),
+        paddingBottom: track! ? floatingPlayerHeight! : bottom,
       }}
       style={{ backgroundColor: colors.background }}
       data={data}
