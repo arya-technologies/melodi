@@ -7,6 +7,7 @@ import TrackPlayer, {
   Track,
   useActiveTrack,
   useIsPlaying,
+  useTrackPlayerEvents,
 } from "react-native-track-player";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
 import { RootState } from "@/app/store";
@@ -23,29 +24,26 @@ export default function PlayerControls() {
 
   const [isFab, setisFab] = useState<boolean>(musics.includes(track!));
   const [isLooped, setisLooped] = useState(false);
-  //
-  TrackPlayer.addEventListener(
-    Event.PlaybackActiveTrackChanged,
-    ({ track }) => {
-      setisFab(musics.includes(track!));
-      setisLooped(false);
-    },
-  );
 
-  const togglePlayback = async () => {
+  useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], ({ track }) => {
+    setisFab(musics.includes(track!));
+    setisLooped(false);
+  });
+
+  const togglePlayback = () => {
     if (!playing) {
-      await TrackPlayer.play();
+      TrackPlayer.play();
     } else {
-      await TrackPlayer.pause();
+      TrackPlayer.pause();
     }
   };
-  const skipToPrevious = async () => {
-    await TrackPlayer.skipToPrevious();
+  const skipToPrevious = () => {
+    TrackPlayer.skipToPrevious();
   };
-  const skipToNext = async () => {
-    await TrackPlayer.skipToNext();
+  const skipToNext = () => {
+    TrackPlayer.skipToNext();
   };
-  const handleFav = async () => {
+  const handleFav = () => {
     setisFab((prev) => !prev);
     if (!musics.includes(track!)) {
       dispatch(addFavMusic(track!));
@@ -53,12 +51,10 @@ export default function PlayerControls() {
       dispatch(removeFavMusic(track!));
     }
   };
-  const handleLoop = async () => {
+  const handleLoop = () => {
     setisLooped((prev) => !prev);
     TrackPlayer.setRepeatMode(isLooped ? RepeatMode.Track : RepeatMode.Queue);
   };
-
-  // useEffect(() => {}, [isFab]);
 
   return (
     <View className="flex-row w-full items-center justify-evenly">

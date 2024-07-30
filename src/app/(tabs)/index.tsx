@@ -2,13 +2,15 @@ import { useAppTheme } from "@/components/providers/Material3ThemeProvider";
 import SongItem from "@/components/SongItem";
 import { playlistData } from "@/constants";
 import React, { useState } from "react";
-import { FlatList, Pressable } from "react-native";
-import { Divider, TouchableRipple } from "react-native-paper";
+import { FlatList, Pressable, View } from "react-native";
+import { Divider, Text, TouchableRipple } from "react-native-paper";
 import TrackPlayer, {
   Event,
   Track,
   useTrackPlayerEvents,
 } from "react-native-track-player";
+import { RootState } from "../store";
+import { useSelector } from "react-redux";
 
 export default function Explore() {
   const { colors } = useAppTheme();
@@ -24,13 +26,14 @@ export default function Explore() {
   };
 
   // const [activestate, setactivestate] = useState<number>();
-  const [queue, setqueue] = useState<Track[]>();
+  // const [queue, setqueue] = useState<Track[]>([]);
+  const { queue } = useSelector((state: RootState) => state.queue);
 
   useTrackPlayerEvents(
     [Event.MetadataCommonReceived, Event.PlaybackActiveTrackChanged],
     async () => {
       // TrackPlayer.getActiveTrackIndex().then((res) => setactivestate(res));
-      TrackPlayer.getQueue().then((res) => setqueue(res));
+      // TrackPlayer.getQueue().then((res) => setqueue(res));
     },
   );
 

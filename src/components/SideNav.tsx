@@ -1,9 +1,8 @@
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import React, { PropsWithChildren } from "react";
-import { useAppTheme } from "./providers/Material3ThemeProvider";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, usePathname } from "expo-router";
-import { Appbar } from "react-native-paper";
+import React from "react";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { useAppTheme } from "./providers/Material3ThemeProvider";
 
 export interface SideNavProps {
   data: {

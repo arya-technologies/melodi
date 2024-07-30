@@ -1,12 +1,8 @@
-import { RootState } from "@/app/store";
-import { playlistData } from "@/constants";
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
   Capability,
   Event,
-  RepeatMode,
 } from "react-native-track-player";
-import { useDispatch, useSelector } from "react-redux";
 
 export async function setupPlayer() {
   let isSetup = false;
@@ -56,18 +52,18 @@ export default async function playbackService() {
   TrackPlayer.addEventListener(Event.RemoteSeek, ({ position }) => {
     TrackPlayer.seekTo(position);
   });
-  TrackPlayer.addEventListener(
-    Event.PlaybackProgressUpdated,
-    ({ track, position }) => {
-      console.log(track.toString(), position.toString());
-      console.log("playback proggress upfated");
-      // dispatch(
-      //   setActiveTrack({ activeTrack: track, activeTrackPosition: position }),
-      // );
-    },
-  );
-  TrackPlayer.addEventListener(
-    Event.PlaybackActiveTrackChanged,
-    ({ track }) => {},
-  );
+  // TrackPlayer.addEventListener(
+  //   Event.PlaybackProgressUpdated,
+  //   ({ track, position }) => {
+  //     console.log(track.toString(), position.toString());
+  //     console.log("playback proggress upfated");
+  //     // dispatch(
+  //     //   setActiveTrack({ activeTrack: track, activeTrackPosition: position }),
+  //     // );
+  //   },
+  // );
+  // TrackPlayer.addEventListener(
+  //   Event.PlaybackActiveTrackChanged,
+  //   ({ track }) => {},
+  // );
 }

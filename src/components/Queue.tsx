@@ -2,13 +2,7 @@ import { RootState } from "@/app/store";
 import React, { useEffect, useState } from "react";
 import { Dimensions, FlatList, Pressable, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import {
-  Button,
-  Icon,
-  IconButton,
-  Text,
-  TouchableRipple,
-} from "react-native-paper";
+import { Button, Icon, IconButton, TouchableRipple } from "react-native-paper";
 import Animated, {
   ReduceMotion,
   useAnimatedStyle,
@@ -38,17 +32,24 @@ export default function Queue() {
   const { floatingPlayerHeight } = useSelector(
     (state: RootState) => state.settings.appearance,
   );
+  const { repeatMode } = useSelector(
+    (state: RootState) => state.settings.controls.player,
+  );
+  const { queue } = useSelector((state: RootState) => state.queue);
+  console.log(queue);
 
   const [localState, setlocalState] = useState<localStateProps>("minimized");
-  const [queue, setqueue] = useState<Track[]>();
-  const [isQueueOn, setisQueueOn] = useState<boolean>();
+  // const [queue, setqueue] = useState<Track[]>();
+  const [isQueueOn, setisQueueOn] = useState<boolean>(
+    repeatMode === RepeatMode.Queue ? true : false,
+  );
 
-  useEffect(() => {
-    TrackPlayer.getQueue().then((res) => setqueue(res));
-    TrackPlayer.getRepeatMode().then((mode) =>
-      setisQueueOn(mode === RepeatMode.Queue ? true : false),
-    );
-  }, [track]);
+  // useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], () => {
+  // TrackPlayer.getQueue().then((res) => setqueue(res));
+  // TrackPlayer.getRepeatMode().then((mode) =>
+  //   setisQueueOn(mode === RepeatMode.Queue ? true : false),
+  // );
+  // });
 
   // const y = useSharedValue(height + floatingPlayerHeight! + bottom);
   const y = useSharedValue(height + floatingPlayerHeight!);
@@ -140,7 +141,7 @@ export default function Queue() {
     })
     .runOnJS(true);
 
-  const handlePlay = async (track: Track) => {
+  const handlePlay = (track: Track) => {
     const alreadyInQueue = queue?.find((item) => item.id === track.id);
     if (!alreadyInQueue) {
       TrackPlayer.add(track).then((index: any) =>
@@ -151,6 +152,7 @@ export default function Queue() {
 
   const toggleRepeatMode = () => {
     setisQueueOn((prev) => !prev);
+    // TrackPlayer.setRepeatMode(isQueueOn ? RepeatMode.Queue : RepeatMode.Off);
     TrackPlayer.setRepeatMode(isQueueOn ? RepeatMode.Queue : RepeatMode.Off);
   };
 

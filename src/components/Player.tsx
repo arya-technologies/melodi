@@ -17,11 +17,13 @@ import TrackPlayer, {
   Event,
   Track,
   useActiveTrack,
+  useTrackPlayerEvents,
 } from "react-native-track-player";
 import { useDispatch, useSelector } from "react-redux";
 import { addTrack, setupPlayer } from "@/features/services/playbackService";
 import Queue from "./Queue";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
+import { setFloatingPlayerPosition } from "@/features/slices/settingsSlice";
 
 type localStateProps = "minimized" | "maximized" | "closed";
 
@@ -42,7 +44,7 @@ export default function Player() {
   const track: Track | undefined = useActiveTrack();
 
   const { activeTrack } = useSelector((state: RootState) => state.queue);
-  const { floatingPlayerHeight } = useSelector(
+  const { floatingPlayerHeight, floatingPlayerPosition } = useSelector(
     (state: RootState) => state.settings.appearance,
   );
 
@@ -50,7 +52,7 @@ export default function Player() {
     track ? "minimized" : "closed",
   );
 
-  TrackPlayer.addEventListener(Event.PlaybackState, ({ state }) => {
+  useTrackPlayerEvents([Event.PlaybackState], ({ state }) => {
     if (state === "playing" && localState === "closed") {
       setlocalState("minimized");
     } else if (state === "stopped") {
@@ -68,7 +70,7 @@ export default function Player() {
   async function setup() {
     let isSetup = await setupPlayer();
     if (isSetup && activeTrack) {
-      await TrackPlayer.add(activeTrack);
+      // await TrackPlayer.add(activeTrack);
     } else {
       await addTrack();
     }
@@ -137,6 +139,11 @@ export default function Player() {
       if (localState === "minimized") {
         y.value = e.absoluteY + floatingPlayerHeight!;
         (o.value = 0), (fo.value = 1);
+        if (e.absoluteY > height - floatingPlayerHeight!) {
+          // console.log(-e.absoluteY - height);
+          // dispatch(setFloatingPlayerPosition(-e.absoluteY - height));
+          // console.log(floatingPlayerPosition);
+        }
       } else if (localState === "maximized" && e.translationY > 0) {
         y.value = e.translationY + floatingPlayerHeight!;
         if (e.translationY > height / 2) {

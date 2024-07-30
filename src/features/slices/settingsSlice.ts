@@ -1,5 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
+import { RepeatMode } from "react-native-track-player";
 
 export type ThemeProps = "system" | "dynamic" | "pureBlack";
 export type ImageCacheProps = "128mb" | "256mb";
@@ -14,10 +15,13 @@ export type AppearanceProps = {
   };
   playerHeight?: number;
   floatingPlayerHeight?: number;
+  floatingPlayerPosition?: number;
 };
 export type ControlsProps = {
   player: {
-    resumePlayback: boolean;
+    resumePlayback?: boolean;
+    // repeatMode: "Off" | "Track" | "Queue";
+    repeatMode?: RepeatMode;
   };
 };
 export type StorageProps = {
@@ -56,10 +60,12 @@ const initialState: SettingsProps = {
     },
     playerHeight: 0,
     floatingPlayerHeight: 80,
+    floatingPlayerPosition: 0,
   },
   controls: {
     player: {
       resumePlayback: false,
+      repeatMode: RepeatMode.Queue,
     },
   },
   storage: {
@@ -96,12 +102,12 @@ export const settingsSlice = createSlice({
     setPlayerHeight: ({ appearance }, { payload }) => {
       appearance.playerHeight = payload;
     },
+    setFloatingPlayerPosition: ({ appearance }, { payload }) => {
+      appearance.floatingPlayerPosition = payload;
+    },
     setcontrols: ({ controls }, { payload }: PayloadAction<ControlsProps>) => {
-      controls = {
-        player: {
-          resumePlayback: payload.player.resumePlayback,
-        },
-      };
+      controls.player.resumePlayback = payload.player.resumePlayback;
+      controls.player.repeatMode = payload.player.repeatMode;
     },
     setstorage: ({ storage }, { payload }: PayloadAction<StorageProps>) => {
       storage = {
@@ -133,6 +139,7 @@ export const {
   setstorage,
   setothers,
   setPlayerHeight,
+  setFloatingPlayerPosition,
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

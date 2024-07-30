@@ -10,11 +10,9 @@ import TrackPlayer from "react-native-track-player";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import playbackService from "@/features/services/playbackService";
+import { useEffect } from "react";
 
 // SplashScreen.preventAutoHideAsync();
-
-NavigationBar.setPositionAsync("absolute");
-NavigationBar.setBackgroundColorAsync("#00000000");
 
 export default function RootLayout() {
   // const router = useRouter();
@@ -33,6 +31,11 @@ export default function RootLayout() {
   //     <Text>Loading...</Text>
   //   </View>;
   // }
+
+  useEffect(() => {
+    NavigationBar.setPositionAsync("absolute");
+    NavigationBar.setBackgroundColorAsync("#00000000");
+  }, []);
 
   return (
     <Provider store={store}>

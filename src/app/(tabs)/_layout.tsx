@@ -1,33 +1,48 @@
 import { TabBar } from "@/components/TabBar";
+import { setActiveTrack, setQueue } from "@/features/slices/queueSlice";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { router } from "expo-router";
 import React from "react";
-import { Appbar } from "react-native-paper";
+import { Appbar, FAB } from "react-native-paper";
+import TrackPlayer, {
+  Event,
+  Track,
+  useActiveTrack,
+  useTrackPlayerEvents,
+} from "react-native-track-player";
+import { useDispatch, useSelector } from "react-redux";
 import Explore from ".";
 import Albums from "./albums";
 import Artists from "./artists";
 import Playlists from "./playlists";
 import Songs from "./songs";
-import TrackPlayer, { Event, Track } from "react-native-track-player";
-import { useDispatch } from "react-redux";
-import { setQueue } from "react-native-track-player/lib/src/trackPlayer";
-import { setActiveTrack } from "@/features/slices/queueSlice";
+import { setcontrols } from "@/features/slices/settingsSlice";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { RootState } from "../store";
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function TabLayout() {
   const dispatch = useDispatch();
+  const { bottom } = useSafeAreaInsets();
+  const track: Track | undefined = useActiveTrack();
+  const { floatingPlayerHeight } = useSelector(
+    (state: RootState) => state.settings.appearance,
+  );
 
-  TrackPlayer.addEventListener(
-    Event.PlaybackProgressUpdated,
+  useTrackPlayerEvents(
+    [Event.PlaybackProgressUpdated],
     ({ track, position }) => {
       dispatch(
         setActiveTrack({ activeTrack: track, activeTrackPosition: position }),
       );
     },
   );
-  TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, () => {
+  useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], () => {
     TrackPlayer.getQueue().then((queue: any) => dispatch(setQueue(queue)));
+    TrackPlayer.getRepeatMode().then((mode) =>
+      dispatch(setcontrols({ player: { repeatMode: mode } })),
+    );
   });
 
   return (
@@ -68,6 +83,16 @@ export default function TabLayout() {
           options={{ tabBarIcon: "albums" }}
         />
       </Tab.Navigator>
+      <FAB
+        icon="search"
+        style={{
+          position: "absolute",
+          margin: 8,
+          right: 0,
+          bottom: track! ? floatingPlayerHeight! : 0,
+        }}
+        onPress={() => console.log("search triggered")}
+      />
     </>
   );
 }

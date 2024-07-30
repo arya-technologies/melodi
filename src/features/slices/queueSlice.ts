@@ -4,10 +4,10 @@ import { ImageColorsResult } from "react-native-image-colors/lib/typescript/type
 import { Track } from "react-native-track-player";
 
 export interface QueueState {
-  queue: Track[];
-  activeTrack: number | undefined;
-  activeTrackPosition: number | undefined;
-  artworkColors: ImageColorsResult | undefined;
+  queue?: Track[];
+  activeTrack?: number | undefined;
+  activeTrackPosition?: number | undefined;
+  artworkColors?: ImageColorsResult | undefined;
 }
 
 const initialState: QueueState = {
@@ -23,6 +23,7 @@ export const queueSlice = createSlice({
   reducers: {
     setQueue: ({ queue }, { payload }) => {
       queue = payload;
+      console.log(payload);
     },
     setActiveTrack: (
       { activeTrack, activeTrackPosition, artworkColors },

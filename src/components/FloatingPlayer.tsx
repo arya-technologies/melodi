@@ -18,19 +18,18 @@ export default function FloatingPlayer({ track }: FloatingPlayerProps) {
   const { colors } = useAppTheme();
 
   const { playing, bufferingDuringPlay } = useIsPlaying();
-  const togglePlayback = async () => {
-    console.log("play pressed");
+  const togglePlayback = () => {
     if (!playing) {
-      await TrackPlayer.play();
+      TrackPlayer.play();
     } else {
-      await TrackPlayer.pause();
+      TrackPlayer.pause();
     }
   };
-  const skipToPrevious = async () => {
-    await TrackPlayer.skipToPrevious();
+  const skipToPrevious = () => {
+    TrackPlayer.skipToPrevious();
   };
-  const skipToNext = async () => {
-    await TrackPlayer.skipToNext();
+  const skipToNext = () => {
+    TrackPlayer.skipToNext();
   };
 
   const { position, duration } = useProgress();

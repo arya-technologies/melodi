@@ -1,15 +1,14 @@
 import React, { PropsWithChildren, useState } from "react";
-import { Image, Pressable, View } from "react-native";
+import { Image, View } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
-import { Track } from "react-native-track-player";
-import { useAppTheme } from "./providers/Material3ThemeProvider";
 import Animated, {
-  isSharedValue,
   ReduceMotion,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import { Track } from "react-native-track-player";
+import { useAppTheme } from "./providers/Material3ThemeProvider";
 
 type SongArtwordProps = PropsWithChildren<{
   track: Track | null | undefined;

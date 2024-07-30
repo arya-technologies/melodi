@@ -11,7 +11,6 @@ type FullPlayerProps = {
 };
 
 export default function FullPlayer({ track }: FullPlayerProps) {
-  const { height } = Dimensions.get("screen");
   return (
     <View className="h-full p-4 flex-1 items-center justify-evenly">
       <SongArtwork track={track} />
