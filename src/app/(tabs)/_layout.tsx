@@ -30,6 +30,11 @@ export default function TabLayout() {
     (state: RootState) => state.settings.appearance,
   );
 
+  const state = useSelector((state: RootState) => state);
+  console.log("Queue", state.queue);
+  console.log("Settings", state.settings);
+  console.log("Favourites", state.favourites);
+
   useTrackPlayerEvents(
     [Event.PlaybackProgressUpdated],
     ({ track, position }) => {
@@ -44,10 +49,6 @@ export default function TabLayout() {
       dispatch(setcontrols({ player: { repeatMode: mode } })),
     );
   });
-
-  const { floatingPlayerPosition } = useSelector(
-    (state: RootState) => state.settings.appearance,
-  );
 
   return (
     <>

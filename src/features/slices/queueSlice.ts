@@ -23,7 +23,6 @@ export const queueSlice = createSlice({
   reducers: {
     setQueue: ({ queue }, { payload }: PayloadAction<QueueState>) => {
       queue = payload.queue;
-      console.log(payload);
     },
     setActiveTrack: (
       { activeTrack, activeTrackPosition },
@@ -31,7 +30,6 @@ export const queueSlice = createSlice({
     ) => {
       activeTrack = payload.activeTrack;
       activeTrackPosition = payload.activeTrackPosition;
-      console.log(activeTrack, activeTrackPosition);
 
       //   let colors = payload.artworkColors;
       //   if (colors?.platform === "ios") {
