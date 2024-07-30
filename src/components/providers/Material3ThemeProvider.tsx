@@ -1,4 +1,5 @@
 import { RootState } from "@/app/store";
+import { setArtworkColors } from "@/features/slices/queueSlice";
 import {
   Material3Scheme,
   Material3Theme,
@@ -7,6 +8,7 @@ import {
 import { createContext, useContext, useEffect } from "react";
 import { useColorScheme } from "react-native";
 import ImageColors from "react-native-image-colors";
+import { ImageColorsResult } from "react-native-image-colors/lib/typescript/types";
 import {
   MD3DarkTheme,
   MD3LightTheme,
@@ -34,6 +36,7 @@ export function Material3ThemeProvider({
   ...otherProps
 }: ProviderProps & { sourceColor?: string; fallbackSourceColor?: string }) {
   const colorScheme = useColorScheme();
+  const dispatch = useDispatch();
 
   const { artworkColors } = useSelector((state: RootState) => state.queue);
   const { appearance } = useSelector((state: RootState) => state.settings);
@@ -59,8 +62,9 @@ export function Material3ThemeProvider({
         cache: true,
         key: track?.artwork,
         quality: "highest",
-      }).then((res) => {
-        updateTheme(res.average);
+      }).then((colors: ImageColorsResult) => {
+        updateTheme(colors.average);
+        dispatch(setArtworkColors(colors));
       });
   };
   useEffect(() => {

@@ -7,14 +7,14 @@ export interface QueueState {
   queue?: Track[];
   activeTrack?: number;
   activeTrackPosition?: number;
-  // artworkColors?: ImageColorsResult | undefined;
+  artworkColors?: ImageColorsResult | undefined;
 }
 
 const initialState: QueueState = {
   queue: [],
   activeTrack: undefined,
   activeTrackPosition: undefined,
-  // artworkColors: undefined,
+  artworkColors: undefined,
 };
 
 export const queueSlice = createSlice({
@@ -46,9 +46,29 @@ export const queueSlice = createSlice({
       //     artworkColors = colors;
       //   }
     },
+    setArtworkColors: (
+      { artworkColors },
+      { payload }: PayloadAction<ImageColorsResult>,
+    ) => {
+      if (payload?.platform === "ios") {
+        artworkColors = {
+          dominant: payload.background,
+          vibrant: payload.primary,
+          average: payload.detail,
+          darkVibrant: payload.secondary,
+          lightMuted: payload.background,
+        };
+      } else if (
+        payload?.platform === "android" ||
+        payload?.platform === "web"
+      ) {
+        artworkColors = payload;
+      }
+    },
   },
 });
 
-export const { setQueue, setActiveTrack } = queueSlice.actions;
+export const { setQueue, setActiveTrack, setArtworkColors } =
+  queueSlice.actions;
 
 export default queueSlice.reducer;

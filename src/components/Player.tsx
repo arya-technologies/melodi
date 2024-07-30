@@ -1,6 +1,7 @@
 import { RootState } from "@/app/store";
 import FloatingPlayer from "@/components/FloatingPlayer";
 import FullPlayer from "@/components/FullPlayer";
+import { setupPlayer } from "@/features/services/playbackService";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Dimensions, Linking } from "react-native";
@@ -20,10 +21,8 @@ import TrackPlayer, {
   useTrackPlayerEvents,
 } from "react-native-track-player";
 import { useDispatch, useSelector } from "react-redux";
-import { addTrack, setupPlayer } from "@/features/services/playbackService";
 import Queue from "./Queue";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
-import { setFloatingPlayerPosition } from "@/features/slices/settingsSlice";
 
 type localStateProps = "minimized" | "maximized" | "closed";
 
@@ -46,7 +45,7 @@ export default function Player() {
   const { queue, activeTrack, activeTrackPosition } = useSelector(
     (state: RootState) => state.queue,
   );
-  const { floatingPlayerHeight, floatingPlayerPosition } = useSelector(
+  const { floatingPlayerHeight } = useSelector(
     (state: RootState) => state.settings.appearance,
   );
 
