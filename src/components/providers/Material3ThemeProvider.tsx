@@ -103,6 +103,7 @@ export function Material3ThemeProvider({
     } else if (themeMode === "dynamic") {
       updateTheme(sourceColor);
     } else if (themeMode === "pureBlack") {
+      resetTheme();
     }
   }, [themeMode, sourceColor]);
 
