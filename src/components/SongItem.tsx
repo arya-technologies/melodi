@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import { RootState } from "@/app/store";
+import React from "react";
 import { Image, View } from "react-native";
 import { Text } from "react-native-paper";
-import TrackPlayer, {
-  Event,
-  Track,
-  useTrackPlayerEvents,
-} from "react-native-track-player";
+import { Track } from "react-native-track-player";
+import { useSelector } from "react-redux";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
 
 type SongItemsProps = {
@@ -14,25 +12,19 @@ type SongItemsProps = {
 
 export default function SongItem({ track }: SongItemsProps) {
   const { colors } = useAppTheme();
-  // const [queue, setqueue] = useState<Track[]>();
-  // const alreadyInQueue = queue?.find((item) => item.id === track?.id);
-  const [isAlreadyOnQueue, setisAlreadyOnQueue] = useState<boolean>();
 
-  useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], () => {
-    // TrackPlayer.getQueue().then((res) => setqueue(res));
-    // TrackPlayer.getQueue().then((queue) =>
-    //   setisAlreadyOnQueue(
-    //     queue?.find((item) => item.id === track?.id) ? true : false,
-    //   ),
-    // );
-  });
+  const queue = useSelector((state: RootState) => state.queue.queue);
+  const isAlreadyOnQueue = queue?.find((item) => item.id === track?.id);
+  // const [isAlreadyOnQueue, setisAlreadyOnQueue] = useState<boolean>();
 
   return (
     <View
       className="flex-row items-center px-4 py-2"
-      style={{
-        backgroundColor: track === isAlreadyOnQueue ? colors.primary : "",
-      }}
+      style={
+        isAlreadyOnQueue && {
+          backgroundColor: colors.primary,
+        }
+      }
     >
       <Image
         source={{ uri: track?.artwork }}

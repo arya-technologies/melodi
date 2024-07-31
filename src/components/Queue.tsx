@@ -37,19 +37,10 @@ export default function Queue() {
   const { queue } = useSelector((state: RootState) => state.queue);
 
   const [localState, setlocalState] = useState<localStateProps>("minimized");
-  // const [queue, setqueue] = useState<Track[]>();
   const [isQueueOn, setisQueueOn] = useState<boolean>(
     repeatMode === RepeatMode.Queue ? true : false,
   );
 
-  // useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], () => {
-  // TrackPlayer.getQueue().then((res) => setqueue(res));
-  // TrackPlayer.getRepeatMode().then((mode) =>
-  //   setisQueueOn(mode === RepeatMode.Queue ? true : false),
-  // );
-  // });
-
-  // const y = useSharedValue(height + floatingPlayerHeight! + bottom);
   const y = useSharedValue(height + floatingPlayerHeight!);
 
   const o = useSharedValue(1);
@@ -139,19 +130,7 @@ export default function Queue() {
     })
     .runOnJS(true);
 
-  // const handlePlay = (track: Track) => {
-  //   const alreadyInQueue = queue?.find((item) => item.id === track.id);
-  //   if (alreadyInQueue) {
-  //     console.log("already in queue");
-  //   } else {
-  //     TrackPlayer.add(track).then((index: any) =>
-  //       TrackPlayer.skip(index).then(() => TrackPlayer.play()),
-  //     );
-  //   }
-  // };
-
   const toggleRepeatMode = () => {
-    // TrackPlayer.setRepeatMode(isQueueOn ? RepeatMode.Queue : RepeatMode.Off);
     TrackPlayer.setRepeatMode(isQueueOn ? RepeatMode.Queue : RepeatMode.Off);
     setisQueueOn((prev) => !prev);
   };

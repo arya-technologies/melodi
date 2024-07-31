@@ -47,7 +47,7 @@ export function Material3ThemeProvider({
 
   const { theme, updateTheme, resetTheme } = useMaterial3Theme();
 
-  const pureBlackThemeColors = {
+  const pureBlackThemeColors: Material3Scheme = {
     ...theme.dark,
     background: "#000",
     surface: "#000",
@@ -61,6 +61,7 @@ export function Material3ThemeProvider({
       level5: "#212121",
     },
     backdrop: "#000000CC",
+    // onSurfaceVariant: "#f00",
   };
 
   const setColors = (colors: ImageColorsResult) => {
@@ -88,10 +89,6 @@ export function Material3ThemeProvider({
       setColors(artworkColors);
     }
   }, []);
-
-  // useEffect(() => {
-  //   updateTheme(sourceColor);
-  // }, [sourceColor]);
 
   useEffect(() => {
     getImageColor(track);

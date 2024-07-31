@@ -10,7 +10,7 @@ export const TabBar = ({ state, descriptors, navigation, position }: any) => {
       style={{
         flexDirection: "row",
         padding: 8,
-        backgroundColor: colors.background,
+        backgroundColor: colors.surface,
       }}
     >
       {state.routes.map((route, index) => {
@@ -69,8 +69,8 @@ export const TabBar = ({ state, descriptors, navigation, position }: any) => {
                 justifyContent: "center",
               }}
             >
-              <IonIcon name={icon} size={24} color={colors.secondary} />
-              <Text style={{ color: colors.secondary }}>{label}</Text>
+              <IonIcon name={icon} size={24} color={colors.onSurfaceVariant} />
+              <Text style={{ color: colors.onSurfaceVariant }}>{label}</Text>
             </Animated.View>
           </TouchableOpacity>
         );
