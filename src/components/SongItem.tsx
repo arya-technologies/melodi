@@ -22,7 +22,7 @@ export default function SongItem({ track }: SongItemsProps) {
       className="flex-row items-center px-4 py-2"
       style={
         isAlreadyOnQueue && {
-          backgroundColor: colors.primary,
+          backgroundColor: colors.elevation.level3,
         }
       }
     >
@@ -35,10 +35,10 @@ export default function SongItem({ track }: SongItemsProps) {
         <View className="flex-row justify-between mt-2">
           <Text variant="labelMedium">{track?.artist}</Text>
           <Text variant="labelMedium">
-            {Math.floor(track?.duration / 60)
+            {Math.floor(track?.duration! / 60)
               .toString()
               .padStart(2, "0")}
-            :{(track?.duration % 60).toString().padStart(2, "0")}
+            :{(track?.duration! % 60).toString().padStart(2, "0")}
           </Text>
         </View>
       </View>
