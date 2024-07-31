@@ -17,7 +17,7 @@ import { addFavMusic, removeFavMusic } from "@/features/slices/favSlice";
 export default function PlayerControls() {
   const dispatch = useDispatch();
   const { colors } = useAppTheme();
-  const track = useActiveTrack();
+  const track: Track | undefined = useActiveTrack();
   const { playing, bufferingDuringPlay } = useIsPlaying();
 
   const { musics } = useSelector((state: RootState) => state.favourites);
@@ -30,7 +30,17 @@ export default function PlayerControls() {
     repeatMode === RepeatMode.Track ? true : false,
   );
 
-  useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], ({ track }) => {
+  // useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], ({ track }) => {
+  //   const isAllready = musics?.find((item) => item?.id === track?.id);
+  //   if (isAllready) {
+  //     setisFab(true);
+  //   } else {
+  //     setisFab(false);
+  //   }
+  //   setisLooped(false);
+  // });
+
+  useEffect(() => {
     const isAllready = musics?.find((item) => item?.id === track?.id);
     if (isAllready) {
       setisFab(true);
@@ -38,7 +48,7 @@ export default function PlayerControls() {
       setisFab(false);
     }
     setisLooped(false);
-  });
+  }, [track]);
 
   const togglePlayback = () => {
     if (!playing) {
