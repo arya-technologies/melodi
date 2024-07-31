@@ -19,6 +19,7 @@ import Songs from "./songs";
 import { setcontrols } from "@/features/slices/settingsSlice";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { RootState } from "../store";
+import favSlice from "@/features/slices/favSlice";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -30,10 +31,12 @@ export default function TabLayout() {
     (state: RootState) => state.settings.appearance,
   );
 
-  const state = useSelector((state: RootState) => state);
-  console.log("Queue", state.queue);
-  console.log("Settings", state.settings);
-  console.log("Favourites", state.favourites);
+  const { queue, settings, favourites } = useSelector(
+    (state: RootState) => state,
+  );
+  console.log("Tabs", favourites);
+  // console.log("Settings", state.settings);
+  // console.log("Favourites", state.favourites);
 
   useTrackPlayerEvents(
     [Event.PlaybackProgressUpdated],

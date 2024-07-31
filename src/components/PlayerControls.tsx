@@ -21,12 +21,22 @@ export default function PlayerControls() {
   const { playing, bufferingDuringPlay } = useIsPlaying();
 
   const { musics } = useSelector((state: RootState) => state.favourites);
+  const { repeatMode } = useSelector(
+    (state: RootState) => state.settings.controls.player,
+  );
 
-  const [isFab, setisFab] = useState<boolean>(musics.includes(track!));
-  const [isLooped, setisLooped] = useState(false);
+  const [isFab, setisFab] = useState<boolean>(false);
+  const [isLooped, setisLooped] = useState<boolean>(
+    repeatMode === RepeatMode.Track ? true : false,
+  );
 
   useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], ({ track }) => {
-    setisFab(musics.includes(track!));
+    const isAllready = musics?.find((item) => item?.id === track?.id);
+    if (isAllready) {
+      setisFab(true);
+    } else {
+      setisFab(false);
+    }
     setisLooped(false);
   });
 
@@ -44,12 +54,12 @@ export default function PlayerControls() {
     TrackPlayer.skipToNext();
   };
   const handleFav = () => {
-    setisFab((prev) => !prev);
-    if (!musics.includes(track!)) {
+    if (!isFab) {
       dispatch(addFavMusic(track!));
     } else {
       dispatch(removeFavMusic(track!));
     }
+    setisFab((prev) => !prev);
   };
   const handleLoop = () => {
     setisLooped((prev) => !prev);

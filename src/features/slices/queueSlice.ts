@@ -7,7 +7,7 @@ export interface QueueState {
   queue?: Track[];
   activeTrack?: number;
   activeTrackPosition?: number;
-  artworkColors?: ImageColorsResult | undefined;
+  artworkColors?: ImageColorsResult;
 }
 
 const initialState: QueueState = {
@@ -21,15 +21,20 @@ export const queueSlice = createSlice({
   name: "queue",
   initialState,
   reducers: {
-    setQueue: ({ queue }, { payload }: PayloadAction<QueueState>) => {
-      queue = payload.queue;
+    setQueue: (
+      { queue, activeTrack, activeTrackPosition },
+      { payload }: PayloadAction<Track[]>,
+    ) => {
+      queue = payload;
+      // console.log("setQueue", queue, activeTrack, activeTrackPosition);
     },
     setActiveTrack: (
-      { activeTrack, activeTrackPosition },
+      { activeTrack, activeTrackPosition, queue },
       { payload }: PayloadAction<QueueState>,
     ) => {
       activeTrack = payload.activeTrack;
       activeTrackPosition = payload.activeTrackPosition;
+      // console.log("setActiveTrack", queue, activeTrack, activeTrackPosition);
 
       //   let colors = payload.artworkColors;
       //   if (colors?.platform === "ios") {

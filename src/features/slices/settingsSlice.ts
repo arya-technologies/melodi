@@ -20,7 +20,6 @@ export type AppearanceProps = {
 export type ControlsProps = {
   player: {
     resumePlayback?: boolean;
-    // repeatMode: "Off" | "Track" | "Queue";
     repeatMode?: RepeatMode;
   };
 };

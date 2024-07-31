@@ -1,6 +1,6 @@
 import { RootState } from "@/app/store";
 import React, { useEffect, useState } from "react";
-import { Dimensions, FlatList, Pressable, View } from "react-native";
+import { Dimensions, FlatList, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { Button, Icon, IconButton, TouchableRipple } from "react-native-paper";
 import Animated, {
@@ -11,11 +11,9 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TrackPlayer, {
-  Event,
   RepeatMode,
   Track,
   useActiveTrack,
-  useTrackPlayerEvents,
 } from "react-native-track-player";
 import { useSelector } from "react-redux";
 import SongItem from "./SongItem";
