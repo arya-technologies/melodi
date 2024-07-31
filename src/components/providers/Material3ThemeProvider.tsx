@@ -43,28 +43,25 @@ export function Material3ThemeProvider({
   const themeMode = useSelector(
     (state: RootState) => state.settings.appearance.colors.theme,
   );
-  const [sourceColor, setsourceColor] = useState<any>("#ff0000");
+  const [sourceColor, setsourceColor] = useState<any>("#0f0");
 
-  const { theme, updateTheme, resetTheme } = useMaterial3Theme({
-    sourceColor,
-  });
+  const { theme, updateTheme, resetTheme } = useMaterial3Theme();
 
-  const [finalTheme, setfinalTheme] = useState<
-    MD3Theme & { colors: Material3Scheme }
-  >(theme);
-
-  // const { theme, updateTheme, resetTheme } = useMaterial3Theme(
-  //   appearance.colors.theme === "dynamic" && artworkColors
-  //     ? {
-  //         sourceColor: artworkColors.average,
-  //         fallbackSourceColor: artworkColors.vibrant,
-  //       }
-  //     : appearance.colors.theme === "pureBlack"
-  //       ? {
-  //           sourceColor: "#000000",
-  //         }
-  //       : {},
-  // );
+  const pureBlackThemeColors = {
+    ...theme.dark,
+    background: "#000",
+    surface: "#000",
+    elevation: {
+      ...theme.dark.elevation,
+      level0: "#00000000",
+      level1: "#0a0a0a",
+      level2: "#0f0f0f",
+      level3: "#121212",
+      level4: "#171717",
+      level5: "#212121",
+    },
+    backdrop: "#000000CC",
+  };
 
   const setColors = (colors: ImageColorsResult) => {
     if (colors.platform === "ios") {
@@ -82,7 +79,6 @@ export function Material3ThemeProvider({
       quality: "highest",
     }).then((colors: ImageColorsResult) => {
       setColors(colors);
-      // updateTheme(colors.average);
       dispatch(setArtworkColors(colors));
     });
   };
@@ -93,9 +89,9 @@ export function Material3ThemeProvider({
     }
   }, []);
 
-  useEffect(() => {
-    updateTheme(sourceColor);
-  }, [sourceColor]);
+  // useEffect(() => {
+  //   updateTheme(sourceColor);
+  // }, [sourceColor]);
 
   useEffect(() => {
     getImageColor(track);
@@ -108,11 +104,14 @@ export function Material3ThemeProvider({
       updateTheme(sourceColor);
     } else if (themeMode === "pureBlack") {
     }
-  }, [themeMode]);
+  }, [themeMode, sourceColor]);
 
   const paperTheme =
     colorScheme === "dark"
-      ? { ...MD3DarkTheme, colors: theme.dark }
+      ? {
+          ...MD3DarkTheme,
+          colors: themeMode === "pureBlack" ? pureBlackThemeColors : theme.dark,
+        }
       : { ...MD3LightTheme, colors: theme.light };
 
   return (
