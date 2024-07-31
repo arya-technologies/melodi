@@ -5,7 +5,7 @@ import {
   Material3Theme,
   useMaterial3Theme,
 } from "@pchmn/expo-material3-theme";
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
 import ImageColors from "react-native-image-colors";
 import { ImageColorsResult } from "react-native-image-colors/lib/typescript/types";
@@ -37,39 +37,78 @@ export function Material3ThemeProvider({
 }: ProviderProps & { sourceColor?: string; fallbackSourceColor?: string }) {
   const colorScheme = useColorScheme();
   const dispatch = useDispatch();
+  const track: Track | undefined = useActiveTrack();
 
   const { artworkColors } = useSelector((state: RootState) => state.queue);
-  const { appearance } = useSelector((state: RootState) => state.settings);
-
-  const { theme, updateTheme, resetTheme } = useMaterial3Theme(
-    appearance.colors.theme === "dynamic" && artworkColors
-      ? {
-          sourceColor: artworkColors.average,
-          fallbackSourceColor: artworkColors.vibrant,
-        }
-      : appearance.colors.theme === "pureBlack"
-        ? {
-            sourceColor: "#000000",
-          }
-        : {},
+  const themeMode = useSelector(
+    (state: RootState) => state.settings.appearance.colors.theme,
   );
+  const [sourceColor, setsourceColor] = useState<any>("#ff0000");
 
-  const track: Track | undefined = useActiveTrack();
-  const getImageColor = async () => {
-    track?.artwork &&
-      ImageColors.getColors(track?.artwork, {
-        fallback: "#ff0000",
-        cache: true,
-        key: track?.artwork,
-        quality: "highest",
-      }).then((colors: ImageColorsResult) => {
-        updateTheme(colors.average);
-        dispatch(setArtworkColors(colors));
-      });
+  const { theme, updateTheme, resetTheme } = useMaterial3Theme({
+    sourceColor,
+  });
+
+  const [finalTheme, setfinalTheme] = useState<
+    MD3Theme & { colors: Material3Scheme }
+  >(theme);
+
+  // const { theme, updateTheme, resetTheme } = useMaterial3Theme(
+  //   appearance.colors.theme === "dynamic" && artworkColors
+  //     ? {
+  //         sourceColor: artworkColors.average,
+  //         fallbackSourceColor: artworkColors.vibrant,
+  //       }
+  //     : appearance.colors.theme === "pureBlack"
+  //       ? {
+  //           sourceColor: "#000000",
+  //         }
+  //       : {},
+  // );
+
+  const setColors = (colors: ImageColorsResult) => {
+    if (colors.platform === "ios") {
+      setsourceColor(colors.detail);
+    } else {
+      setsourceColor(colors.average);
+    }
   };
+
+  const getImageColor = async (track: Track | undefined) => {
+    ImageColors.getColors(track?.artwork!, {
+      fallback: "#ff0",
+      cache: true,
+      key: track?.id,
+      quality: "highest",
+    }).then((colors: ImageColorsResult) => {
+      setColors(colors);
+      // updateTheme(colors.average);
+      dispatch(setArtworkColors(colors));
+    });
+  };
+
   useEffect(() => {
-    getImageColor();
+    if (artworkColors) {
+      setColors(artworkColors);
+    }
+  }, []);
+
+  useEffect(() => {
+    updateTheme(sourceColor);
+  }, [sourceColor]);
+
+  useEffect(() => {
+    getImageColor(track);
   }, [track]);
+
+  useEffect(() => {
+    if (themeMode === "system") {
+      resetTheme();
+    } else if (themeMode === "dynamic") {
+      updateTheme(sourceColor);
+    } else if (themeMode === "pureBlack") {
+    }
+  }, [themeMode]);
 
   const paperTheme =
     colorScheme === "dark"

@@ -60,20 +60,21 @@ export const queueSlice = createSlice({
       { artworkColors },
       { payload }: PayloadAction<ImageColorsResult>,
     ) => {
-      if (payload?.platform === "ios") {
-        artworkColors = {
-          dominant: payload.background,
-          vibrant: payload.primary,
-          average: payload.detail,
-          darkVibrant: payload.secondary,
-          lightMuted: payload.background,
-        };
-      } else if (
-        payload?.platform === "android" ||
-        payload?.platform === "web"
-      ) {
-        artworkColors = payload;
-      }
+      artworkColors = payload;
+      // if (payload?.platform === "ios") {
+      //   artworkColors = {
+      //     dominant: payload.background,
+      //     vibrant: payload.primary,
+      //     average: payload.detail,
+      //     darkVibrant: payload.secondary,
+      //     lightMuted: payload.background,
+      //   };
+      // } else if (
+      //   payload?.platform === "android" ||
+      //   payload?.platform === "web"
+      // ) {
+      //   artworkColors = payload;
+      // }
     },
   },
 });

@@ -13,24 +13,20 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
-import hardSet from "redux-persist/es/stateReconciler/hardSet";
 
 const settingsConfig = {
   key: "settings",
   storage: AsyncStorage,
-  // stateReconciler: hardSet,
 };
 
 const queueConfig = {
   key: "queue",
   storage: AsyncStorage,
-  // stateReconciler: hardSet,
 };
 
 const favConfig = {
   key: "favourites",
   storage: AsyncStorage,
-  // stateReconciler: hardSet,
 };
 
 const rootReducer = combineReducers({
