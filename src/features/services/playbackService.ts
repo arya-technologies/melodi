@@ -73,7 +73,7 @@ export const handlePlay = async (track: Track) => {
   const queue = await TrackPlayer.getQueue();
   const alreadyInQueue = queue?.find((item) => item.id === track.id);
   if (alreadyInQueue) {
-    console.log("already in queue");
+    TrackPlayer.play();
   } else {
     TrackPlayer.add(track).then((index: any) =>
       TrackPlayer.skip(index).then(() => TrackPlayer.play()),

@@ -166,13 +166,17 @@ export default function Queue() {
           className="w-full h-full -top-20 relative"
           style={{ backgroundColor: colors.elevation.level3 }}
         >
-          <TouchableRipple onPress={handleTap} className="z-10">
+          <TouchableRipple
+            onPress={handleTap}
+            className="z-10"
+            style={{
+              paddingBottom: bottom,
+              height: floatingPlayerHeight,
+            }}
+          >
             <Animated.View
-              style={[
-                floatingOpacity,
-                { height: floatingPlayerHeight, paddingBottom: bottom },
-              ]}
-              className="relative flex-row items-center justify-center"
+              style={[floatingOpacity]}
+              className="relative flex-row items-center justify-center h-full"
             >
               <Icon source="layers" size={24} />
               <View className="absolute flex-row w-full h-full items-center justify-end">
