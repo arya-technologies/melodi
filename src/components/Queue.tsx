@@ -18,6 +18,7 @@ import TrackPlayer, {
 import { useSelector } from "react-redux";
 import SongItem from "./SongItem";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
+import { handlePlay } from "@/features/services/playbackService";
 
 type localStateProps = "minimized" | "maximized";
 
@@ -138,20 +139,21 @@ export default function Queue() {
     })
     .runOnJS(true);
 
-  const handlePlay = (track: Track) => {
-    console.log(queue);
-    const alreadyInQueue = queue?.find((item) => item.id === track.id);
-    if (!alreadyInQueue) {
-      TrackPlayer.add(track).then((index: any) =>
-        TrackPlayer.skip(index).then(() => TrackPlayer.play()),
-      );
-    }
-  };
+  // const handlePlay = (track: Track) => {
+  //   const alreadyInQueue = queue?.find((item) => item.id === track.id);
+  //   if (alreadyInQueue) {
+  //     console.log("already in queue");
+  //   } else {
+  //     TrackPlayer.add(track).then((index: any) =>
+  //       TrackPlayer.skip(index).then(() => TrackPlayer.play()),
+  //     );
+  //   }
+  // };
 
   const toggleRepeatMode = () => {
-    setisQueueOn((prev) => !prev);
     // TrackPlayer.setRepeatMode(isQueueOn ? RepeatMode.Queue : RepeatMode.Off);
     TrackPlayer.setRepeatMode(isQueueOn ? RepeatMode.Queue : RepeatMode.Off);
+    setisQueueOn((prev) => !prev);
   };
 
   return (

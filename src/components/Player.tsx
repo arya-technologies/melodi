@@ -42,9 +42,7 @@ export default function Player() {
   const { colors } = useAppTheme();
   const track: Track | undefined = useActiveTrack();
 
-  const { queue, activeTrack, activeTrackPosition } = useSelector(
-    (state: RootState) => state.queue,
-  );
+  const { queue, activeTrack } = useSelector((state: RootState) => state.queue);
   const { floatingPlayerHeight } = useSelector(
     (state: RootState) => state.settings.appearance,
   );
@@ -56,10 +54,9 @@ export default function Player() {
   async function setup() {
     let isSetup = await setupPlayer();
     if (isSetup && queue) {
-      console.log(activeTrack, activeTrackPosition);
       TrackPlayer.setQueue(queue).then(() => {
         if (activeTrack) {
-          TrackPlayer.skip(activeTrack!, activeTrackPosition);
+          TrackPlayer.skip(activeTrack.index, activeTrack.position);
         }
       });
     } else {

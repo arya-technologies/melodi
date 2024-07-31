@@ -2,6 +2,7 @@ import TrackPlayer, {
   AppKilledPlaybackBehavior,
   Capability,
   Event,
+  Track,
 } from "react-native-track-player";
 
 export async function setupPlayer() {
@@ -67,3 +68,15 @@ export default async function playbackService() {
   //   ({ track }) => {},
   // );
 }
+
+export const handlePlay = async (track: Track) => {
+  const queue = await TrackPlayer.getQueue();
+  const alreadyInQueue = queue?.find((item) => item.id === track.id);
+  if (alreadyInQueue) {
+    console.log("already in queue");
+  } else {
+    TrackPlayer.add(track).then((index: any) =>
+      TrackPlayer.skip(index).then(() => TrackPlayer.play()),
+    );
+  }
+};

@@ -31,23 +31,19 @@ export default function TabLayout() {
     (state: RootState) => state.settings.appearance,
   );
 
-  const { queue, settings, favourites } = useSelector(
-    (state: RootState) => state,
-  );
-  console.log("Tabs", favourites);
+  const queue = useSelector((state: RootState) => state.queue);
+  console.log("Tabs", queue);
   // console.log("Settings", state.settings);
   // console.log("Favourites", state.favourites);
 
   useTrackPlayerEvents(
     [Event.PlaybackProgressUpdated],
     ({ track, position }) => {
-      dispatch(
-        setActiveTrack({ activeTrack: track, activeTrackPosition: position }),
-      );
+      dispatch(setActiveTrack({ index: track, position: position }));
     },
   );
   useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], () => {
-    TrackPlayer.getQueue().then((queue: any) => dispatch(setQueue(queue)));
+    TrackPlayer.getQueue().then((queue: Track[]) => dispatch(setQueue(queue)));
     TrackPlayer.getRepeatMode().then((mode) =>
       dispatch(setcontrols({ player: { repeatMode: mode } })),
     );

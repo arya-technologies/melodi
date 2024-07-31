@@ -3,17 +3,22 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { ImageColorsResult } from "react-native-image-colors/lib/typescript/types";
 import { Track } from "react-native-track-player";
 
-export interface QueueState {
+type QueueState = Track[];
+type ActiveTrackState = {
+  index: number;
+  position: number;
+};
+type ArtworkColorsState = ImageColorsResult;
+
+export interface QueueSliceState {
   queue?: Track[];
-  activeTrack?: number;
-  activeTrackPosition?: number;
-  artworkColors?: ImageColorsResult;
+  activeTrack?: ActiveTrackState;
+  artworkColors?: ArtworkColorsState;
 }
 
-const initialState: QueueState = {
-  queue: [],
+const initialState: QueueSliceState = {
+  queue: undefined,
   activeTrack: undefined,
-  activeTrackPosition: undefined,
   artworkColors: undefined,
 };
 
@@ -22,19 +27,21 @@ export const queueSlice = createSlice({
   initialState,
   reducers: {
     setQueue: (
-      { queue, activeTrack, activeTrackPosition },
-      { payload }: PayloadAction<Track[]>,
-    ) => {
-      queue = payload;
-      // console.log("setQueue", queue, activeTrack, activeTrackPosition);
-    },
-    setActiveTrack: (
-      { activeTrack, activeTrackPosition, queue },
+      { queue, activeTrack },
       { payload }: PayloadAction<QueueState>,
     ) => {
-      activeTrack = payload.activeTrack;
-      activeTrackPosition = payload.activeTrackPosition;
-      // console.log("setActiveTrack", queue, activeTrack, activeTrackPosition);
+      queue = payload;
+      console.log("setQueue", queue, activeTrack);
+    },
+    setActiveTrack: (
+      { activeTrack, queue },
+      { payload }: PayloadAction<ActiveTrackState>,
+    ) => {
+      activeTrack = {
+        index: payload.index,
+        position: payload.position,
+      };
+      console.log("setActiveTrack", queue, activeTrack);
 
       //   let colors = payload.artworkColors;
       //   if (colors?.platform === "ios") {

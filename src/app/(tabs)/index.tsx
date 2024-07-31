@@ -11,6 +11,7 @@ import TrackPlayer, {
 } from "react-native-track-player";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
+import { handlePlay } from "@/features/services/playbackService";
 
 export default function Explore() {
   const { colors } = useAppTheme();
@@ -37,16 +38,16 @@ export default function Explore() {
     },
   );
 
-  const handlePlay = async (track: Track) => {
-    const alreadyInQueue = queue?.findIndex((item) => item.id === track.id);
-    if (alreadyInQueue !== -1) {
-      TrackPlayer.skip(alreadyInQueue!).then(() => TrackPlayer.play());
-    } else if (alreadyInQueue === -1) {
-      TrackPlayer.add(track).then((index: any) =>
-        TrackPlayer.skip(index).then(() => TrackPlayer.play()),
-      );
-    }
-  };
+  // const handlePlay = async (track: Track) => {
+  //   const alreadyInQueue = queue?.findIndex((item) => item.id === track.id);
+  //   if (alreadyInQueue !== -1) {
+  //     TrackPlayer.skip(alreadyInQueue!).then(() => TrackPlayer.play());
+  //   } else if (alreadyInQueue === -1) {
+  //     TrackPlayer.add(track).then((index: any) =>
+  //       TrackPlayer.skip(index).then(() => TrackPlayer.play()),
+  //     );
+  //   }
+  // };
 
   return (
     <FlatList

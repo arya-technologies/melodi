@@ -1,18 +1,16 @@
+import { RootState } from "@/app/store";
+import { addFavMusic, removeFavMusic } from "@/features/slices/favSlice";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { ActivityIndicator, IconButton } from "react-native-paper";
 import TrackPlayer, {
-  Event,
   RepeatMode,
   Track,
   useActiveTrack,
   useIsPlaying,
-  useTrackPlayerEvents,
 } from "react-native-track-player";
-import { useAppTheme } from "./providers/Material3ThemeProvider";
-import { RootState } from "@/app/store";
 import { useDispatch, useSelector } from "react-redux";
-import { addFavMusic, removeFavMusic } from "@/features/slices/favSlice";
+import { useAppTheme } from "./providers/Material3ThemeProvider";
 
 export default function PlayerControls() {
   const dispatch = useDispatch();
