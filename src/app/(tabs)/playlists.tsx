@@ -8,11 +8,10 @@ import { YouTube } from "youtube-sr";
 export default function Playlists() {
   const test = async () => {
     try {
-      const videos = await YouTube.search("playing with fire");
-      console.log(
-        videos.map((m, i) => `[${++i}] ${m.title} (${m.url})`).join("\n"),
-      );
-
+      // const videos = await YouTube.search("playing with fire");
+      // console.log(
+      //   videos.map((m, i) => `[${++i}] ${m.title} (${m.url})`).join("\n"),
+      // );
       // youtubeDl("https://www.youtube.com/watch?v=6xKWiCMKKJg", {
       //   dumpSingleJson: true,
       //   noCheckCertificates: true,
