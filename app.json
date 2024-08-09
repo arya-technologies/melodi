@@ -7,6 +7,8 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "scheme": "melodi",
+    "primaryColor": "#ffffff",
+    "backgroundColor": "#00000000",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -23,6 +25,8 @@
       },
       "package": "com.notscripter.melodi"
     },
+    "androidStatusBar": {},
+    "androidNavigationBar": {},
     "web": {
       "favicon": "./assets/favicon.png"
     },
