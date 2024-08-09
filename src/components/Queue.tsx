@@ -34,7 +34,7 @@ export default function Queue() {
   const { repeatMode } = useSelector(
     (state: RootState) => state.settings.controls.player,
   );
-  const { activeQueue } = useSelector((state: RootState) => state.queue);
+  const { queue } = useSelector((state: RootState) => state.queue);
 
   const [localState, setlocalState] = useState<localStateProps>("minimized");
   const [isQueueOn, setisQueueOn] = useState<boolean>(
@@ -173,7 +173,7 @@ export default function Queue() {
                 paddingBottom: track ? floatingPlayerHeight! : bottom,
               }}
               className="flex-1 h-full w-full"
-              data={activeQueue?.queue}
+              data={queue}
               renderItem={({ item }) => (
                 <TouchableRipple onPress={() => handlePlay(item)}>
                   <SongItem track={item} />
@@ -193,9 +193,7 @@ export default function Queue() {
               <View className="relative flex-row items-center justify-center z-10 h-full">
                 <Icon source="arrow-down" size={24} />
                 <View className="absolute flex-row w-full h-full items-center justify-between px-4">
-                  <Button mode="text">
-                    {activeQueue?.queue?.length} Songs
-                  </Button>
+                  <Button mode="text">{queue?.length} Songs</Button>
                   <Button mode="elevated" onPress={toggleRepeatMode}>
                     Queue Loop {isQueueOn ? "On" : "Off"}
                   </Button>

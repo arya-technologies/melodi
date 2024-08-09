@@ -11,15 +11,13 @@ type ActiveTrackState = {
 type ArtworkColorsState = ImageColorsResult;
 
 export interface QueueSliceState {
-  activeQueue?: {
-    queue?: Track[];
-  };
+  queue?: Track[];
   activeTrack?: ActiveTrackState;
   artworkColors?: ArtworkColorsState;
 }
 
 const initialState: QueueSliceState = {
-  activeQueue: undefined,
+  queue: undefined,
   activeTrack: undefined,
   artworkColors: undefined,
 };
@@ -28,19 +26,14 @@ export const queueSlice = createSlice({
   name: "queue",
   initialState,
   reducers: {
-    setQueue: ({ activeQueue }, { payload }: PayloadAction<QueueState>) => {
-      activeQueue = {
-        queue: payload,
-      };
+    setQueue: ({ queue }, { payload }: PayloadAction<QueueState>) => {
+      queue = payload;
     },
     setActiveTrack: (
       { activeTrack },
       { payload }: PayloadAction<ActiveTrackState>,
     ) => {
-      activeTrack = {
-        index: payload.index,
-        position: payload.position,
-      };
+      activeTrack = payload;
     },
     setArtworkColors: (
       { artworkColors },

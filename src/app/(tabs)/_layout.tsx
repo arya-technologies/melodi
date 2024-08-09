@@ -31,10 +31,8 @@ export default function TabLayout() {
     (state: RootState) => state.settings.appearance,
   );
 
-  const { activeQueue, activeTrack } = useSelector(
-    (state: RootState) => state.queue,
-  );
-  console.log("Tabs", activeQueue?.queue);
+  const { queue, activeTrack } = useSelector((state: RootState) => state.queue);
+  console.log("Tabs", queue);
   console.log("Tabs", activeTrack);
   // console.log("Settings", state.settings);
   // console.log("Favourites", state.favourites);

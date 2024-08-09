@@ -38,13 +38,10 @@ export default function Player() {
 
   const { height } = Dimensions.get("screen");
   const { bottom } = useSafeAreaInsets();
-  const dispatch = useDispatch();
   const { colors } = useAppTheme();
   const track: Track | undefined = useActiveTrack();
 
-  const { activeQueue, activeTrack } = useSelector(
-    (state: RootState) => state.queue,
-  );
+  const { queue, activeTrack } = useSelector((state: RootState) => state.queue);
   const { floatingPlayerHeight } = useSelector(
     (state: RootState) => state.settings.appearance,
   );
@@ -55,14 +52,12 @@ export default function Player() {
 
   async function setup() {
     let isSetup = await setupPlayer();
-    if (isSetup && activeQueue?.queue) {
-      TrackPlayer.setQueue(activeQueue.queue).then(() => {
-        if (activeTrack) {
-          TrackPlayer.skip(activeTrack.index, activeTrack.position);
-        }
-      });
+    if (isSetup && queue) {
+      const queueRes = await TrackPlayer.setQueue(queue);
+      if (activeTrack) {
+        await TrackPlayer.skip(activeTrack.index, activeTrack.position);
+      }
     } else {
-      // await addTrack();
       console.log("no queue in redux");
     }
   }
@@ -78,13 +73,6 @@ export default function Player() {
       setlocalState("closed");
     }
   });
-
-  // TrackPlayer.addEventListener(
-  //   Event.PlaybackActiveTrackChanged,
-  //   ({ track }) => {
-  //     dispatch(setActiveTrack({ activeTrack: track }));
-  //   },
-  // );
 
   const y = useSharedValue(height);
 
