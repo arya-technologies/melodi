@@ -69,16 +69,18 @@ export function Material3ThemeProvider({
     }
   };
 
-  const getImageColor = async (track: Track | undefined) => {
-    ImageColors.getColors(track?.artwork!, {
-      fallback: "#ff0",
-      cache: true,
-      key: track?.id,
-      quality: "highest",
-    }).then((colors: ImageColorsResult) => {
-      setColors(colors);
-      dispatch(setArtworkColors(colors));
-    });
+  const getImageColor = async (track?: Track) => {
+    if (track?.artwork) {
+      ImageColors.getColors(track.artwork, {
+        fallback: "#ff0",
+        cache: true,
+        key: track?.id,
+        quality: "highest",
+      }).then((colors: ImageColorsResult) => {
+        setColors(colors);
+        dispatch(setArtworkColors(colors));
+      });
+    }
   };
 
   useEffect(() => {
@@ -92,7 +94,6 @@ export function Material3ThemeProvider({
   }, [track]);
 
   useEffect(() => {
-    console.log(themeMode);
     if (themeMode.value === "system") {
       Appearance.setColorScheme(null);
       resetTheme();

@@ -1,9 +1,8 @@
+import ScrollView from "@/components/ScrollView";
 import React from "react";
-import { View } from "react-native";
 import { Button } from "react-native-paper";
 require("node-libs-react-native/globals");
 // import youtubeDl from "youtube-dl-exec";
-import { YouTube } from "youtube-sr";
 
 export default function Playlists() {
   const test = async () => {
@@ -24,11 +23,10 @@ export default function Playlists() {
     }
   };
   return (
-    <View>
+    <ScrollView>
       <Button mode="elevated" onPress={test}>
         Test
       </Button>
-      <View>{}</View>
-    </View>
+    </ScrollView>
   );
 }

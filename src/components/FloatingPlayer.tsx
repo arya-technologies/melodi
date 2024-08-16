@@ -1,7 +1,7 @@
 import { Slider } from "@miblanchard/react-native-slider";
 import React from "react";
-import { Dimensions, Image, Text, View } from "react-native";
-import { ActivityIndicator, IconButton } from "react-native-paper";
+import { Dimensions, Image, View } from "react-native";
+import { ActivityIndicator, IconButton, Text } from "react-native-paper";
 import TrackPlayer, {
   State,
   Track,
@@ -58,23 +58,25 @@ export default function FloatingPlayer({ track }: FloatingPlayerProps) {
         <View className="relative w-full h-full flex-row items-center justify-between px-4 py-2">
           <View className="flex-row items-center">
             <Image
-              source={{ uri: track?.artwork }}
+              source={{
+                uri:
+                  track?.artwork ||
+                  "https://images.unsplash.com/photo-1532375810709-75b1da00537c?q=80&w=876&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              }}
               className="h-12 w-12 rounded-md"
             />
             <Text
+              variant="labelLarge"
+              numberOfLines={1}
               className="tracking-wide font-bold ml-2"
-              style={{ color: colors.secondary }}
             >
               {track?.title}
             </Text>
           </View>
-          <View className="flex-row ">
-            <IconButton
-              icon="play-skip-back"
-              onPress={skipToPrevious}
-              iconColor={colors.secondary}
-              className="m-0"
-            />
+          <View
+            className="flex-row absolute right-0 h-full items-center"
+            style={{ backgroundColor: colors.elevation.level2 }}
+          >
             {bufferingDuringPlay === true ? (
               <ActivityIndicator style={{ margin: 8 }} />
             ) : (

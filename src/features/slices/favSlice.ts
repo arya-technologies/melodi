@@ -8,10 +8,10 @@ export type FavArtistsProps = object[];
 export type FavAlbumsProps = object[];
 
 export interface FavouritesProps {
-  musics?: FavMusicsProps;
-  playlists?: FavPlaylistsProps;
-  artists?: FavArtistsProps;
-  albums?: FavAlbumsProps;
+  musics: FavMusicsProps;
+  playlists: FavPlaylistsProps;
+  artists: FavArtistsProps;
+  albums: FavAlbumsProps;
 }
 
 const initialState: FavouritesProps = {
@@ -26,10 +26,10 @@ export const favSlice = createSlice({
   initialState,
   reducers: {
     addFavMusic: ({ musics }, { payload }: PayloadAction<Track>) => {
-      musics = musics?.push(payload);
+      musics = musics.concat([payload]);
     },
     removeFavMusic: ({ musics }, { payload }: PayloadAction<Track>) => {
-      musics = musics?.filter((item) => item.id !== payload.id);
+      musics = musics.filter((item) => item.id !== payload.id);
     },
   },
 });

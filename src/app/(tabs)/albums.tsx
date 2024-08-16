@@ -1,10 +1,11 @@
-import { View, Text } from "react-native";
+import ScrollView from "@/components/ScrollView";
 import React from "react";
+import { Text } from "react-native-paper";
 
 export default function Albums() {
   return (
-    <View>
+    <ScrollView>
       <Text>Albums</Text>
-    </View>
+    </ScrollView>
   );
 }

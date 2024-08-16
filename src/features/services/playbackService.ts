@@ -71,12 +71,14 @@ export default async function playbackService() {
 
 export const handlePlay = async (track: Track) => {
   const queue = await TrackPlayer.getQueue();
-  const alreadyInQueue = queue?.find((item) => item.id === track.id);
-  if (alreadyInQueue) {
-    TrackPlayer.play();
+  const alreadyInQueue = queue.includes(track);
+  if (!alreadyInQueue) {
+    const index = await TrackPlayer.add(track);
+    if (index) {
+      await TrackPlayer.skip(index);
+      await TrackPlayer.play();
+    }
   } else {
-    TrackPlayer.add(track).then((index: any) =>
-      TrackPlayer.skip(index).then(() => TrackPlayer.play()),
-    );
+    await TrackPlayer.play();
   }
 };

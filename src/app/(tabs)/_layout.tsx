@@ -61,6 +61,7 @@ export default function TabLayout() {
         Linking.openSettings();
       }
     };
+
     return (
       <View>
         <Text variant="displayLarge">Melodi</Text>

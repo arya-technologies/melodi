@@ -1,10 +1,10 @@
-import { RootState } from "@/features/store";
 import FloatingPlayer from "@/components/FloatingPlayer";
 import FullPlayer from "@/components/FullPlayer";
 import { setupPlayer } from "@/features/services/playbackService";
-import { useRouter } from "expo-router";
+import { RootState } from "@/features/store";
+import { usePathname, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Dimensions, Linking, View } from "react-native";
+import { Dimensions, Linking } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { FAB, TouchableRipple } from "react-native-paper";
 import Animated, {
@@ -20,7 +20,7 @@ import TrackPlayer, {
   useActiveTrack,
   useTrackPlayerEvents,
 } from "react-native-track-player";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Queue from "./Queue";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
 
@@ -28,10 +28,10 @@ type localStateProps = "minimized" | "maximized" | "closed";
 
 export default function Player() {
   const router = useRouter();
+  const pathname = usePathname();
 
   Linking.addEventListener("url", ({ url }) => {
     if (url === "trackplayer://notification.click") {
-      router.canDismiss();
       setlocalState("maximized");
     }
   });
@@ -180,6 +180,7 @@ export default function Player() {
             style={{ backgroundColor: colors.elevation.level1 }}
           >
             <FAB
+              visible={pathname === "/search" ? false : true}
               icon="search"
               style={{
                 position: "absolute",
