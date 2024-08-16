@@ -30,11 +30,11 @@ export default function Player() {
   const router = useRouter();
   const pathname = usePathname();
 
-  Linking.addEventListener("url", ({ url }) => {
-    if (url === "trackplayer://notification.click") {
-      setlocalState("maximized");
-    }
-  });
+  // Linking.addEventListener("url", ({ url }) => {
+  //   if (url === "trackplayer://notification.click") {
+  //     setlocalState("maximized");
+  //   }
+  // });
 
   const floatingPlayerHeight = 80;
   const { height } = Dimensions.get("screen");
@@ -62,6 +62,18 @@ export default function Player() {
 
   useEffect(() => {
     setup();
+
+    function deepLinkHandler(data: { url: string }) {
+      if (data.url === "trackplayer://notification.click") {
+        setlocalState("maximized");
+      }
+    }
+
+    const subscription = Linking.addEventListener("url", deepLinkHandler);
+
+    return () => {
+      subscription.remove();
+    };
   }, []);
 
   useTrackPlayerEvents([Event.PlaybackState], ({ state }) => {
