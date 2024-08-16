@@ -5,6 +5,7 @@ import { useAppTheme } from "./providers/Material3ThemeProvider";
 
 export const TabBar = ({ state, descriptors, navigation, position }: any) => {
   const { colors } = useAppTheme();
+
   return (
     <View
       style={{

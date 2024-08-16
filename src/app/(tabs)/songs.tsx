@@ -1,18 +1,35 @@
-import Flatlist from "@/components/Flatlist";
 import SongItem from "@/components/SongItem";
-import { playlistData } from "@/constants";
-import React from "react";
-import { Pressable } from "react-native";
+import { handlePlay } from "@/features/services/playbackService";
+import { Asset, getAssetsAsync } from "expo-media-library";
+import React, { useEffect, useState } from "react";
+import { FlatList, Pressable } from "react-native";
+import { Track } from "react-native-track-player";
 
 export default function Songs() {
+  const [songs, setsongs] = useState<Asset[]>([]);
+
+  useEffect(() => {
+    (async function () {
+      const assetsResponse = await getAssetsAsync({ mediaType: "audio" });
+      setsongs(assetsResponse.assets);
+    })();
+  }, []);
+
   return (
-    <Flatlist
-      data={playlistData}
-      renderItem={({ item }) => (
-        <Pressable onPress={() => console.log(item)}>
-          <SongItem track={item} />
-        </Pressable>
-      )}
-    />
+    <FlatList data={songs} renderItem={({ item }) => renderLocalTracks(item)} />
   );
 }
+
+const renderLocalTracks = (asset: Asset) => {
+  const track: Track = {
+    url: asset.uri,
+    title: asset.filename.split(".").shift(),
+    duration: asset.duration,
+    contentType: asset.mediaType,
+  };
+  return (
+    <Pressable onPress={() => handlePlay(track)}>
+      <SongItem track={track} />
+    </Pressable>
+  );
+};
