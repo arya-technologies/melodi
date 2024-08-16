@@ -23,7 +23,12 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.notscripter.melodi"
+      "package": "com.notscripter.melodi",
+      "permissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_MEDIA_LOCATION"
+      ]
     },
     "androidStatusBar": {},
     "androidNavigationBar": {},
@@ -48,6 +53,7 @@
       "eas": {
         "projectId": "3dbf9a76-02e0-468d-b320-0b657bca1695"
       }
-    }
+    },
+    "owner": "arya-technologies"
   }
 }
