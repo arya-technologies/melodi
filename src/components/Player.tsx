@@ -6,7 +6,7 @@ import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Dimensions, Linking } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { TouchableRipple } from "react-native-paper";
+import { FAB, TouchableRipple } from "react-native-paper";
 import Animated, {
   ReduceMotion,
   useAnimatedStyle,
@@ -109,7 +109,6 @@ export default function Player() {
 
   const resetY = () => {
     if (localState === "minimized") {
-      // y.value = height - bottom;
       y.value = height;
       o.value = 1;
       fo.value = 0;
@@ -134,9 +133,6 @@ export default function Player() {
         y.value = e.absoluteY + floatingPlayerHeight!;
         (o.value = 0), (fo.value = 1);
         if (e.absoluteY > height - floatingPlayerHeight!) {
-          // console.log(e.absoluteY - height);
-          // dispatch(setFloatingPlayerPosition(e.absoluteY - height));
-          // console.log(floatingPlayerPosition);
         }
       } else if (localState === "maximized" && e.translationY > 0) {
         y.value = e.translationY + floatingPlayerHeight!;
@@ -181,6 +177,16 @@ export default function Player() {
         className="h-full w-full absolute bottom-0 left-0"
       >
         <GestureDetector gesture={maximiseHandler}>
+          <FAB
+            icon="search"
+            style={{
+              position: "absolute",
+              margin: 16,
+              right: 0,
+              top: -56,
+            }}
+            onPress={() => router.push("search")}
+          />
           <Animated.View
             className="w-full h-full -top-20 relative"
             style={{ backgroundColor: colors.elevation.level1 }}

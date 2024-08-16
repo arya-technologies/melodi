@@ -1,11 +1,14 @@
-import SongItem from "@/components/SongItem";
-import { handlePlay } from "@/features/services/playbackService";
+import RenderLocalTracks from "@/components/RenderLocalTracks";
+import { useAppTheme } from "@/components/providers/Material3ThemeProvider";
 import { Asset, getAssetsAsync } from "expo-media-library";
 import React, { useEffect, useState } from "react";
-import { FlatList, Pressable } from "react-native";
-import { Track } from "react-native-track-player";
+import { FlatList } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Explore() {
+  const { colors } = useAppTheme();
+  const { bottom } = useSafeAreaInsets();
+
   const [songs, setsongs] = useState<Asset[]>([]);
 
   useEffect(() => {
@@ -16,20 +19,13 @@ export default function Explore() {
   }, []);
 
   return (
-    <FlatList data={songs} renderItem={({ item }) => renderLocalTracks(item)} />
+    <FlatList
+      contentContainerStyle={{
+        paddingBottom: bottom,
+      }}
+      style={{ backgroundColor: colors.background }}
+      data={songs}
+      renderItem={({ item }) => RenderLocalTracks(item)}
+    />
   );
 }
-
-const renderLocalTracks = (asset: Asset) => {
-  const track: Track = {
-    url: asset.uri,
-    title: asset.filename.split(".").shift(),
-    duration: asset.duration,
-    contentType: asset.mediaType,
-  };
-  return (
-    <Pressable onPress={() => handlePlay(track)}>
-      <SongItem track={track} />
-    </Pressable>
-  );
-};

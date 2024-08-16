@@ -1,43 +1,24 @@
 import { persistor, store } from "@/app/store";
 import Player from "@/components/Player";
 import { Material3ThemeProvider } from "@/components/providers/Material3ThemeProvider";
+import playbackService from "@/features/services/playbackService";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as NavigationBar from "expo-navigation-bar";
 import { Stack } from "expo-router/stack";
+import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator } from "react-native-paper";
 import TrackPlayer from "react-native-track-player";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import playbackService from "@/features/services/playbackService";
-import { createContext, useEffect } from "react";
 
 // SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  // const router = useRouter();
-
-  // Linking.addEventListener("url", ({ url }) => {
-  //   if (url === "trackplayer://notification.click") {
-  //     // router.replace("/");
-  //   }
-  // });
-
-  // const insets = useSafeAreaInsets();
-  // console.log(insets);
-
-  // if (!isPlayerReady) {
-  //   <View>
-  //     <Text>Loading...</Text>
-  //   </View>;
-  // }
-
   useEffect(() => {
     NavigationBar.setPositionAsync("absolute");
     NavigationBar.setBackgroundColorAsync("#00000000");
   }, []);
-
-  const FloatingPlayerPositionContext = createContext<number>(0);
 
   return (
     <Provider store={store}>
@@ -57,7 +38,6 @@ export default function RootLayout() {
               initialRouteName="(tabs)"
             />
             <Player />
-            {/* <Queue /> */}
           </GestureHandlerRootView>
         </Material3ThemeProvider>
       </PersistGate>
