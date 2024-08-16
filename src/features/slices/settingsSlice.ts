@@ -1,28 +1,51 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import { appendBaseUrl } from "expo-router/build/fork/getPathFromState";
 import { RepeatMode } from "react-native-track-player";
 
-export type ThemeProps = "system" | "dynamic" | "pureBlack";
+export type ThemesProps = "system" | "light" | "dark" | "dynamic" | "pureBlack";
+export type ThemeProps = {
+  label: string;
+  value: string;
+  icon: string;
+};
+
+export const themes: ThemeProps[] = [
+  {
+    label: "System",
+    value: "system",
+    icon: "color-wand",
+  },
+  {
+    label: "Light",
+    value: "light",
+    icon: "sunny",
+  },
+  {
+    label: "Dark",
+    value: "dark",
+    icon: "cloudy-night",
+  },
+  {
+    label: "Dynamic",
+    value: "dynamic",
+    icon: "color-wand",
+  },
+  {
+    label: "Pure Black",
+    value: "pureBlack",
+    icon: "moon",
+  },
+];
+
 export type ImageCacheProps = "128mb" | "256mb";
 export type SongCacheProps = "512mb" | "1gb";
 
 export type AppearanceProps = {
-  colors: {
-    theme: ThemeProps;
-  };
-  typography: {
-    useSystemFont: boolean;
-  };
-  playerHeight?: number;
-  floatingPlayerHeight?: number;
-  floatingPlayerPosition?: number;
+  theme: ThemeProps;
 };
-export type ControlsProps = {
-  player: {
-    resumePlayback?: boolean;
-    repeatMode?: RepeatMode;
-  };
+export type PlayerProps = {
+  resumePlayback: boolean;
+  repeatMode: RepeatMode;
 };
 export type StorageProps = {
   searchHistory: {
@@ -44,29 +67,18 @@ export type OthersProps = {
 
 export interface SettingsProps {
   appearance: AppearanceProps;
-  controls: ControlsProps;
+  player: PlayerProps;
   storage: StorageProps;
   others: OthersProps;
-  info: {};
 }
 
 const initialState: SettingsProps = {
   appearance: {
-    colors: {
-      theme: "dynamic",
-    },
-    typography: {
-      useSystemFont: false,
-    },
-    playerHeight: 0,
-    floatingPlayerHeight: 80,
-    floatingPlayerPosition: 0,
+    theme: themes[0],
   },
-  controls: {
-    player: {
-      resumePlayback: false,
-      repeatMode: RepeatMode.Queue,
-    },
+  player: {
+    resumePlayback: false,
+    repeatMode: RepeatMode.Queue,
   },
   storage: {
     searchHistory: {
@@ -85,7 +97,6 @@ const initialState: SettingsProps = {
       optimizationDisabled: false,
     },
   },
-  info: {},
 };
 
 export const settingsSlice = createSlice({
@@ -98,14 +109,8 @@ export const settingsSlice = createSlice({
     ) => {
       appearance = payload;
     },
-    setPlayerHeight: ({ appearance }, { payload }) => {
-      appearance.playerHeight = payload;
-    },
-    setFloatingPlayerPosition: ({ appearance }, { payload }) => {
-      appearance.floatingPlayerPosition = payload;
-    },
-    setcontrols: ({ controls }, { payload }: PayloadAction<ControlsProps>) => {
-      controls = payload;
+    setplayer: ({ player }, { payload }: PayloadAction<PlayerProps>) => {
+      player = payload;
     },
     setstorage: ({ storage }, { payload }: PayloadAction<StorageProps>) => {
       storage = payload;
@@ -116,13 +121,7 @@ export const settingsSlice = createSlice({
   },
 });
 
-export const {
-  setappearance,
-  setcontrols,
-  setstorage,
-  setothers,
-  setPlayerHeight,
-  setFloatingPlayerPosition,
-} = settingsSlice.actions;
+export const { setappearance, setplayer, setstorage, setothers } =
+  settingsSlice.actions;
 
 export default settingsSlice.reducer;
