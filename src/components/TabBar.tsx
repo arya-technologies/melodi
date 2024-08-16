@@ -11,7 +11,7 @@ export const TabBar = ({ state, descriptors, navigation, position }: any) => {
       style={{
         flexDirection: "row",
         padding: 8,
-        backgroundColor: colors.surface,
+        backgroundColor: colors.elevation.level2,
       }}
     >
       {state.routes.map((route, index) => {

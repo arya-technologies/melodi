@@ -1,4 +1,4 @@
-import { RootState } from "@/app/store";
+import { RootState } from "@/features/store";
 import React from "react";
 import { Image, View } from "react-native";
 import { Text } from "react-native-paper";

@@ -1,4 +1,4 @@
-import { RootState } from "@/app/store";
+import { RootState } from "@/features/store";
 import ScrollView from "@/components/ScrollView";
 import React, { useEffect, useState } from "react";
 import { List } from "react-native-paper";

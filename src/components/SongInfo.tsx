@@ -3,8 +3,6 @@ import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { Track } from "react-native-track-player";
 import { useAppTheme } from "./providers/Material3ThemeProvider";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/store";
 
 type SongInfoProps = PropsWithChildren<{
   track: Track | null | undefined;

@@ -107,16 +107,19 @@ export const settingsSlice = createSlice({
       { appearance },
       { payload }: PayloadAction<AppearanceProps>,
     ) => {
-      appearance = payload;
+      appearance.theme = payload.theme;
     },
     setplayer: ({ player }, { payload }: PayloadAction<PlayerProps>) => {
-      player = payload;
+      player.repeatMode = payload.repeatMode;
+      player.resumePlayback = payload.resumePlayback;
     },
     setstorage: ({ storage }, { payload }: PayloadAction<StorageProps>) => {
-      storage = payload;
+      storage.searchHistory = payload.searchHistory;
+      storage.imageCache = payload.imageCache;
+      storage.songCache = payload.songCache;
     },
     setothers: ({ others }, { payload }: PayloadAction<OthersProps>) => {
-      others = payload;
+      others.battery = payload.battery;
     },
   },
 });

@@ -1,19 +1,19 @@
 import ScrollView from "@/components/ScrollView";
 import {
-  setappearance,
-  setplayer,
-  ThemeProps,
-  themes,
   ImageCacheProps,
   SongCacheProps,
-  setstorage,
+  ThemeProps,
+  setappearance,
   setothers,
+  setplayer,
+  setstorage,
+  themes,
 } from "@/features/slices/settingsSlice";
 import React, { useEffect, useState } from "react";
 import { Button, List, Menu, Switch } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store";
-import Linking from "expo-linking";
+import { RootState } from "../../features/store";
+import * as Linking from "expo-linking";
 
 export default function Appearance() {
   const dispatch = useDispatch();

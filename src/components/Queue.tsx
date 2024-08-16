@@ -1,4 +1,4 @@
-import { RootState } from "@/app/store";
+import { RootState } from "@/features/store";
 import React, { useEffect, useState } from "react";
 import { Dimensions, FlatList, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -28,11 +28,9 @@ export default function Queue() {
   const { colors } = useAppTheme();
   const track: Track | undefined = useActiveTrack();
 
-  const { floatingPlayerHeight } = useSelector(
-    (state: RootState) => state.settings.appearance,
-  );
+  const floatingPlayerHeight = 80;
   const { repeatMode } = useSelector(
-    (state: RootState) => state.settings.controls.player,
+    (state: RootState) => state.settings.player,
   );
   const { queue } = useSelector((state: RootState) => state.queue);
 

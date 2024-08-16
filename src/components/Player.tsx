@@ -1,10 +1,10 @@
-import { RootState } from "@/app/store";
+import { RootState } from "@/features/store";
 import FloatingPlayer from "@/components/FloatingPlayer";
 import FullPlayer from "@/components/FullPlayer";
 import { setupPlayer } from "@/features/services/playbackService";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Dimensions, Linking } from "react-native";
+import { Dimensions, Linking, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { FAB, TouchableRipple } from "react-native-paper";
 import Animated, {
@@ -36,15 +36,13 @@ export default function Player() {
     }
   });
 
+  const floatingPlayerHeight = 80;
   const { height } = Dimensions.get("screen");
   const { bottom } = useSafeAreaInsets();
   const { colors } = useAppTheme();
   const track: Track | undefined = useActiveTrack();
 
   const { queue, activeTrack } = useSelector((state: RootState) => state.queue);
-  const { floatingPlayerHeight } = useSelector(
-    (state: RootState) => state.settings.appearance,
-  );
 
   const [localState, setlocalState] = useState<localStateProps>(
     track ? "minimized" : "closed",
@@ -113,12 +111,12 @@ export default function Player() {
       o.value = 1;
       fo.value = 0;
     } else if (localState === "maximized") {
-      y.value = floatingPlayerHeight!;
+      y.value = floatingPlayerHeight;
       o.value = 0;
       fo.value = 1;
     } else if (localState === "closed") {
       TrackPlayer.reset();
-      y.value = height + floatingPlayerHeight! + bottom;
+      y.value = height + floatingPlayerHeight;
       o.value = 0;
       fo.value = 0;
     }
@@ -177,20 +175,19 @@ export default function Player() {
         className="h-full w-full absolute bottom-0 left-0"
       >
         <GestureDetector gesture={maximiseHandler}>
-          <FAB
-            icon="search"
-            style={{
-              position: "absolute",
-              margin: 16,
-              right: 0,
-              top: -56,
-            }}
-            onPress={() => router.push("search")}
-          />
           <Animated.View
             className="w-full h-full -top-20 relative"
             style={{ backgroundColor: colors.elevation.level1 }}
           >
+            <FAB
+              icon="search"
+              style={{
+                position: "absolute",
+                right: 16,
+                top: -(bottom + 56),
+              }}
+              onPress={() => router.push("search")}
+            />
             <TouchableRipple borderless onPress={handleTap} className="z-10">
               <Animated.View
                 className="h-20"

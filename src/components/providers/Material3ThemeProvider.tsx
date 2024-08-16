@@ -1,4 +1,4 @@
-import { RootState } from "@/app/store";
+import { RootState } from "@/features/store";
 import { setArtworkColors } from "@/features/slices/queueSlice";
 import {
   Material3Scheme,
@@ -31,8 +31,6 @@ const Material3ThemeProviderContext =
 
 export function Material3ThemeProvider({
   children,
-  // sourceColor,
-  // fallbackSourceColor,
   ...otherProps
 }: ProviderProps & { sourceColor?: string; fallbackSourceColor?: string }) {
   const colorScheme = useColorScheme();
@@ -61,7 +59,6 @@ export function Material3ThemeProvider({
       level5: "#212121",
     },
     backdrop: "#000000CC",
-    // onSurfaceVariant: "#f00",
   };
 
   const setColors = (colors: ImageColorsResult) => {
@@ -95,6 +92,7 @@ export function Material3ThemeProvider({
   }, [track]);
 
   useEffect(() => {
+    console.log(themeMode);
     if (themeMode.value === "system") {
       Appearance.setColorScheme(null);
       resetTheme();

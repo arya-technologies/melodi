@@ -1,11 +1,13 @@
 import { TabBar } from "@/components/TabBar";
+import View from "@/components/View";
 import { setActiveTrack, setQueue } from "@/features/slices/queueSlice";
 import { setplayer } from "@/features/slices/settingsSlice";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import * as Linking from "expo-linking";
+import { usePermissions } from "expo-media-library";
 import { router } from "expo-router";
 import React from "react";
-import { Appbar } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Appbar, Text } from "react-native-paper";
 import TrackPlayer, {
   Event,
   Track,
@@ -14,7 +16,7 @@ import TrackPlayer, {
 } from "react-native-track-player";
 import { useDispatch, useSelector } from "react-redux";
 import Explore from ".";
-import { RootState } from "../store";
+import { RootState } from "../../features/store";
 import Albums from "./albums";
 import Artists from "./artists";
 import Playlists from "./playlists";
@@ -24,9 +26,9 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function TabLayout() {
   const dispatch = useDispatch();
-  const { bottom } = useSafeAreaInsets();
-  const track: Track | undefined = useActiveTrack();
+  const [mediaPermission, requestMediaPermission] = usePermissions();
 
+  const track: Track | undefined = useActiveTrack();
   const { queue, activeTrack } = useSelector((state: RootState) => state.queue);
   const { player } = useSelector((state: RootState) => state.settings);
 
@@ -43,9 +45,42 @@ export default function TabLayout() {
     );
   });
 
+  if (!mediaPermission) {
+    return (
+      <View>
+        <Text variant="titleMedium">Not Supported</Text>
+      </View>
+    );
+  }
+
+  if (!mediaPermission.granted) {
+    const handleMmediaPermission = async () => {
+      if (!mediaPermission.granted && mediaPermission.canAskAgain) {
+        await requestMediaPermission();
+      } else {
+        Linking.openSettings();
+      }
+    };
+    return (
+      <View>
+        <Text variant="displayLarge">Melodi</Text>
+        <Text variant="titleMedium">
+          Melodi needs access to your Local Songs.
+          <Text
+            variant="titleMedium"
+            onPress={handleMmediaPermission}
+            className="text-blue-500 mx-4"
+          >
+            Continue
+          </Text>
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <>
-      <Appbar.Header mode="small">
+      <Appbar.Header mode="small" elevated>
         <Appbar.Content title="Melodi" />
         <Appbar.Action
           onPress={() => {

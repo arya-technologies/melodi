@@ -1,4 +1,4 @@
-import { RootState } from "@/app/store";
+import { RootState } from "@/features/store";
 import { addFavMusic, removeFavMusic } from "@/features/slices/favSlice";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
@@ -20,23 +20,13 @@ export default function PlayerControls() {
 
   const { musics } = useSelector((state: RootState) => state.favourites);
   const { repeatMode } = useSelector(
-    (state: RootState) => state.settings.controls.player,
+    (state: RootState) => state.settings.player,
   );
 
   const [isFab, setisFab] = useState<boolean>(false);
   const [isLooped, setisLooped] = useState<boolean>(
     repeatMode === RepeatMode.Track ? true : false,
   );
-
-  // useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], ({ track }) => {
-  //   const isAllready = musics?.find((item) => item?.id === track?.id);
-  //   if (isAllready) {
-  //     setisFab(true);
-  //   } else {
-  //     setisFab(false);
-  //   }
-  //   setisLooped(false);
-  // });
 
   useEffect(() => {
     const isAllready = musics?.find((item) => item?.id === track?.id);
