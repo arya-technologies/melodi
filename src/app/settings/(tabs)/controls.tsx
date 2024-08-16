@@ -42,7 +42,9 @@ export default function Controls() {
         <List.Item
           title="Equalizer"
           description="Interact with the system equalizer"
-          onPress={() => Linking.openSettings()}
+          onPress={() =>
+            Linking.sendIntent("android.media.audiofx.AudioEffect")
+          }
         />
       </List.Section>
     </ScrollView>

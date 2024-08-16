@@ -38,7 +38,6 @@ export default function Player() {
 
   const { height } = Dimensions.get("screen");
   const { bottom } = useSafeAreaInsets();
-  const dispatch = useDispatch();
   const { colors } = useAppTheme();
   const track: Track | undefined = useActiveTrack();
 
@@ -54,13 +53,11 @@ export default function Player() {
   async function setup() {
     let isSetup = await setupPlayer();
     if (isSetup && queue) {
-      TrackPlayer.setQueue(queue).then(() => {
-        if (activeTrack) {
-          TrackPlayer.skip(activeTrack.index, activeTrack.position);
-        }
-      });
+      const queueRes = await TrackPlayer.setQueue(queue);
+      if (activeTrack) {
+        await TrackPlayer.skip(activeTrack.index, activeTrack.position);
+      }
     } else {
-      // await addTrack();
       console.log("no queue in redux");
     }
   }
@@ -76,13 +73,6 @@ export default function Player() {
       setlocalState("closed");
     }
   });
-
-  // TrackPlayer.addEventListener(
-  //   Event.PlaybackActiveTrackChanged,
-  //   ({ track }) => {
-  //     dispatch(setActiveTrack({ activeTrack: track }));
-  //   },
-  // );
 
   const y = useSharedValue(height);
 

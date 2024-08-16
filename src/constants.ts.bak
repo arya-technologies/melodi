@@ -8,7 +8,7 @@ export const playlistData: Track[] = [
     album: "Champagne Talk",
     artwork:
       "https://c.saavncdn.com/734/Champagne-Talk-Hindi-2022-20221008011951-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/one.mp3"),
     duration: 207,
   },
   {
@@ -18,7 +18,7 @@ export const playlistData: Track[] = [
     album: "Shershaah",
     artwork:
       "https://c.saavncdn.com/238/Shershaah-Original-Motion-Picture-Soundtrack--Hindi-2021-20210815181610-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/two.mp3"),
     duration: 206,
   },
   {
@@ -28,7 +28,7 @@ export const playlistData: Track[] = [
     album: "Fighter",
     artwork:
       "https://c.saavncdn.com/187/Spirit-Of-Fighter-Hindi-2023-20230815052231-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/three.mp3"),
     duration: 56,
   },
   {
@@ -38,7 +38,7 @@ export const playlistData: Track[] = [
     album: "RCB",
     artwork:
       "https://c.saavncdn.com/258/Team-Side-Feat-Rcb-English-2024-20240313152735-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/four.mp3"),
     duration: 181,
   },
 
@@ -49,7 +49,7 @@ export const playlistData: Track[] = [
     album: "Champagne Talk",
     artwork:
       "https://c.saavncdn.com/734/Champagne-Talk-Hindi-2022-20221008011951-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/one.mp3"),
     duration: 207,
   },
   {
@@ -59,7 +59,7 @@ export const playlistData: Track[] = [
     album: "Shershaah",
     artwork:
       "https://c.saavncdn.com/238/Shershaah-Original-Motion-Picture-Soundtrack--Hindi-2021-20210815181610-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/two.mp3"),
     duration: 206,
   },
   {
@@ -69,7 +69,7 @@ export const playlistData: Track[] = [
     album: "Fighter",
     artwork:
       "https://c.saavncdn.com/187/Spirit-Of-Fighter-Hindi-2023-20230815052231-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/three.mp3"),
     duration: 56,
   },
   {
@@ -79,7 +79,7 @@ export const playlistData: Track[] = [
     album: "RCB",
     artwork:
       "https://c.saavncdn.com/258/Team-Side-Feat-Rcb-English-2024-20240313152735-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/four.mp3"),
     duration: 181,
   },
 
@@ -90,7 +90,7 @@ export const playlistData: Track[] = [
     album: "Champagne Talk",
     artwork:
       "https://c.saavncdn.com/734/Champagne-Talk-Hindi-2022-20221008011951-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/one.mp3"),
     duration: 207,
   },
   {
@@ -100,7 +100,7 @@ export const playlistData: Track[] = [
     album: "Shershaah",
     artwork:
       "https://c.saavncdn.com/238/Shershaah-Original-Motion-Picture-Soundtrack--Hindi-2021-20210815181610-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/two.mp3"),
     duration: 206,
   },
   {
@@ -110,7 +110,7 @@ export const playlistData: Track[] = [
     album: "Fighter",
     artwork:
       "https://c.saavncdn.com/187/Spirit-Of-Fighter-Hindi-2023-20230815052231-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/three.mp3"),
     duration: 56,
   },
   {
@@ -120,7 +120,7 @@ export const playlistData: Track[] = [
     album: "RCB",
     artwork:
       "https://c.saavncdn.com/258/Team-Side-Feat-Rcb-English-2024-20240313152735-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/four.mp3"),
     duration: 181,
   },
 
@@ -131,7 +131,7 @@ export const playlistData: Track[] = [
     album: "Champagne Talk",
     artwork:
       "https://c.saavncdn.com/734/Champagne-Talk-Hindi-2022-20221008011951-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/one.mp3"),
     duration: 207,
   },
   {
@@ -141,7 +141,7 @@ export const playlistData: Track[] = [
     album: "Shershaah",
     artwork:
       "https://c.saavncdn.com/238/Shershaah-Original-Motion-Picture-Soundtrack--Hindi-2021-20210815181610-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/two.mp3"),
     duration: 206,
   },
   {
@@ -151,7 +151,7 @@ export const playlistData: Track[] = [
     album: "Fighter",
     artwork:
       "https://c.saavncdn.com/187/Spirit-Of-Fighter-Hindi-2023-20230815052231-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/three.mp3"),
     duration: 56,
   },
   {
@@ -161,7 +161,7 @@ export const playlistData: Track[] = [
     album: "RCB",
     artwork:
       "https://c.saavncdn.com/258/Team-Side-Feat-Rcb-English-2024-20240313152735-500x500.jpg",
-    url: "https://sampleswap.org/mp3/artist/46669/joevirus_Out-post-aiff-160.mp3",
+    url: require("../assets/audio/four.mp3"),
     duration: 181,
   },
   {

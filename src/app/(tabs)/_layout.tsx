@@ -1,9 +1,11 @@
 import { TabBar } from "@/components/TabBar";
 import { setActiveTrack, setQueue } from "@/features/slices/queueSlice";
+import { setcontrols } from "@/features/slices/settingsSlice";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { router } from "expo-router";
 import React from "react";
-import { Appbar, FAB, Text } from "react-native-paper";
+import { Appbar, FAB } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TrackPlayer, {
   Event,
   Track,
@@ -12,14 +14,11 @@ import TrackPlayer, {
 } from "react-native-track-player";
 import { useDispatch, useSelector } from "react-redux";
 import Explore from ".";
+import { RootState } from "../store";
 import Albums from "./albums";
 import Artists from "./artists";
 import Playlists from "./playlists";
 import Songs from "./songs";
-import { setcontrols } from "@/features/slices/settingsSlice";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { RootState } from "../store";
-import favSlice from "@/features/slices/favSlice";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -31,8 +30,9 @@ export default function TabLayout() {
     (state: RootState) => state.settings.appearance,
   );
 
-  const queue = useSelector((state: RootState) => state.queue);
+  const { queue, activeTrack } = useSelector((state: RootState) => state.queue);
   console.log("Tabs", queue);
+  console.log("Tabs", activeTrack);
   // console.log("Settings", state.settings);
   // console.log("Favourites", state.favourites);
 

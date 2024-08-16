@@ -1,5 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
+import { appendBaseUrl } from "expo-router/build/fork/getPathFromState";
 import { RepeatMode } from "react-native-track-player";
 
 export type ThemeProps = "system" | "dynamic" | "pureBlack";
@@ -95,8 +96,7 @@ export const settingsSlice = createSlice({
       { appearance },
       { payload }: PayloadAction<AppearanceProps>,
     ) => {
-      appearance.colors.theme = payload.colors.theme;
-      appearance.typography.useSystemFont = payload.typography.useSystemFont;
+      appearance = payload;
     },
     setPlayerHeight: ({ appearance }, { payload }) => {
       appearance.playerHeight = payload;
@@ -105,29 +105,13 @@ export const settingsSlice = createSlice({
       appearance.floatingPlayerPosition = payload;
     },
     setcontrols: ({ controls }, { payload }: PayloadAction<ControlsProps>) => {
-      controls.player.resumePlayback = payload.player.resumePlayback;
-      controls.player.repeatMode = payload.player.repeatMode;
+      controls = payload;
     },
     setstorage: ({ storage }, { payload }: PayloadAction<StorageProps>) => {
-      storage = {
-        searchHistory: {
-          isEnabled: payload.searchHistory.isEnabled,
-          data: payload.searchHistory.data,
-        },
-        imageCache: {
-          maxSize: payload.imageCache.maxSize,
-        },
-        songCache: {
-          maxSize: payload.songCache.maxSize,
-        },
-      };
+      storage = payload;
     },
     setothers: ({ others }, { payload }: PayloadAction<OthersProps>) => {
-      others = {
-        battery: {
-          optimizationDisabled: payload.battery.optimizationDisabled,
-        },
-      };
+      others = payload;
     },
   },
 });

@@ -26,55 +26,20 @@ export const queueSlice = createSlice({
   name: "queue",
   initialState,
   reducers: {
-    setQueue: (
-      { queue, activeTrack },
-      { payload }: PayloadAction<QueueState>,
-    ) => {
+    setQueue: ({ queue }, { payload }: PayloadAction<QueueState>) => {
       queue = payload;
-      console.log("setQueue", queue, activeTrack);
     },
     setActiveTrack: (
-      { activeTrack, queue },
+      { activeTrack },
       { payload }: PayloadAction<ActiveTrackState>,
     ) => {
-      activeTrack = {
-        index: payload.index,
-        position: payload.position,
-      };
-      console.log("setActiveTrack", queue, activeTrack);
-
-      //   let colors = payload.artworkColors;
-      //   if (colors?.platform === "ios") {
-      //     artworkColors = {
-      //       dominant: colors.background,
-      //       vibrant: colors.primary,
-      //       average: colors.detail,
-      //       darkVibrant: colors.secondary,
-      //       lightMuted: colors.background,
-      //     };
-      //   } else if (colors?.platform === "android" || colors?.platform === "web") {
-      //     artworkColors = colors;
-      //   }
+      activeTrack = payload;
     },
     setArtworkColors: (
       { artworkColors },
       { payload }: PayloadAction<ImageColorsResult>,
     ) => {
       artworkColors = payload;
-      // if (payload?.platform === "ios") {
-      //   artworkColors = {
-      //     dominant: payload.background,
-      //     vibrant: payload.primary,
-      //     average: payload.detail,
-      //     darkVibrant: payload.secondary,
-      //     lightMuted: payload.background,
-      //   };
-      // } else if (
-      //   payload?.platform === "android" ||
-      //   payload?.platform === "web"
-      // ) {
-      //   artworkColors = payload;
-      // }
     },
   },
 });
