@@ -6,7 +6,7 @@ import {
   useMaterial3Theme,
 } from "@pchmn/expo-material3-theme";
 import { createContext, useContext, useEffect, useState } from "react";
-import { useColorScheme } from "react-native";
+import { Appearance, useColorScheme } from "react-native";
 import ImageColors from "react-native-image-colors";
 import { ImageColorsResult } from "react-native-image-colors/lib/typescript/types";
 import {
@@ -41,7 +41,7 @@ export function Material3ThemeProvider({
 
   const { artworkColors } = useSelector((state: RootState) => state.queue);
   const themeMode = useSelector(
-    (state: RootState) => state.settings.appearance.colors.theme,
+    (state: RootState) => state.settings.appearance.theme,
   );
   const [sourceColor, setsourceColor] = useState<any>("#0f0");
 
@@ -95,11 +95,17 @@ export function Material3ThemeProvider({
   }, [track]);
 
   useEffect(() => {
-    if (themeMode === "system") {
+    if (themeMode.value === "system") {
+      Appearance.setColorScheme(null);
       resetTheme();
-    } else if (themeMode === "dynamic") {
+    } else if (themeMode.value === "light") {
+      Appearance.setColorScheme("light");
+    } else if (themeMode.value === "dark") {
+      Appearance.setColorScheme("dark");
+    } else if (themeMode.value === "dynamic") {
       updateTheme(sourceColor);
-    } else if (themeMode === "pureBlack") {
+    } else if (themeMode.value === "pureBlack") {
+      Appearance.setColorScheme("dark");
       resetTheme();
     }
   }, [themeMode, sourceColor]);
@@ -108,7 +114,8 @@ export function Material3ThemeProvider({
     colorScheme === "dark"
       ? {
           ...MD3DarkTheme,
-          colors: themeMode === "pureBlack" ? pureBlackThemeColors : theme.dark,
+          colors:
+            themeMode.value === "pureBlack" ? pureBlackThemeColors : theme.dark,
         }
       : { ...MD3LightTheme, colors: theme.light };
 

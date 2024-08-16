@@ -14,10 +14,10 @@ export default function AboutAppDialog({
   onDismiss,
 }: AboutAppDialogProos) {
   const handleSource = () => {
-    Linking.openURL("https://github.com/not-scripter/expo-template");
+    Linking.openURL("https://github.com/arya-technologies/melodi");
   };
   const handleIssue = () => {
-    Linking.openURL("https://github.com/not-scripter/expo-template/issues");
+    Linking.openURL("https://github.com/arya-technologies/melodi/issues");
   };
 
   return (
