@@ -4,7 +4,6 @@ import { setActiveTrack, setQueue } from "@/features/slices/queueSlice";
 import { setplayer } from "@/features/slices/settingsSlice";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import * as Linking from "expo-linking";
-import { usePermissions } from "expo-media-library";
 import { router } from "expo-router";
 import React from "react";
 import { Appbar, Text } from "react-native-paper";
@@ -26,7 +25,6 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function TabLayout() {
   const dispatch = useDispatch();
-  const [mediaPermission, requestMediaPermission] = usePermissions();
 
   const track: Track | undefined = useActiveTrack();
   const { queue, activeTrack } = useSelector((state: RootState) => state.queue);
@@ -45,39 +43,38 @@ export default function TabLayout() {
     );
   });
 
-  if (!mediaPermission) {
-    return (
-      <View>
-        <Text variant="titleMedium">Not Supported</Text>
-      </View>
-    );
-  }
+  // if (!mediaPermission) {
+  //   return (
+  //     <View>
+  //       <Text variant="titleMedium">Not Supported</Text>
+  //     </View>
+  //   );
+  // }
+  //
+  // if (!mediaPermission.granted) {
+  //   const handleMmediaPermission = async () => {
+  //     if (!mediaPermission.granted && mediaPermission.canAskAgain) {
+  //       await requestMediaPermission();
+  //     } else {
+  //       Linking.openSettings();
+  //     }
+  //   };
 
-  if (!mediaPermission.granted) {
-    const handleMmediaPermission = async () => {
-      if (!mediaPermission.granted && mediaPermission.canAskAgain) {
-        await requestMediaPermission();
-      } else {
-        Linking.openSettings();
-      }
-    };
-
-    return (
-      <View>
-        <Text variant="displayLarge">Melodi</Text>
-        <Text variant="titleMedium">
-          Melodi needs access to your Local Songs.
-          <Text
-            variant="titleMedium"
-            onPress={handleMmediaPermission}
-            className="text-blue-500 mx-4"
-          >
-            Continue
-          </Text>
-        </Text>
-      </View>
-    );
-  }
+  //   return (
+  //     <View>
+  //       <Text variant="displayLarge">Melodi</Text>
+  //       <Text variant="titleMedium">
+  //         Melodi needs access to your Local Songs.
+  //         <Text
+  //           variant="titleMedium"
+  //           className="text-blue-500 mx-4"
+  //         >
+  //           Continue
+  //         </Text>
+  //       </Text>
+  //     </View>
+  //   );
+  // }
 
   return (
     <>

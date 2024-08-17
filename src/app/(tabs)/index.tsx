@@ -1,22 +1,50 @@
 import RenderLocalTracks from "@/components/RenderLocalTracks";
+import View from "@/components/View";
 import { useAppTheme } from "@/components/providers/Material3ThemeProvider";
-import { Asset, getAssetsAsync } from "expo-media-library";
 import React, { useEffect, useState } from "react";
 import { FlatList } from "react-native";
+import {
+  SortSongFields,
+  SortSongOrder,
+  getAll,
+} from "react-native-get-music-files";
+import { Song } from "react-native-get-music-files/lib/typescript/src/NativeTurboSongs";
+import { Text } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Explore() {
   const { colors } = useAppTheme();
   const { bottom } = useSafeAreaInsets();
 
-  const [songs, setsongs] = useState<Asset[]>([]);
+  const [songs, setsongs] = useState<Song[]>([]);
+  const [error, seterror] = useState<string>();
 
   useEffect(() => {
     (async function () {
-      const assetsResponse = await getAssetsAsync({ mediaType: "audio" });
-      setsongs(assetsResponse.assets);
+      seterror("");
+      const response = await getAll({
+        limit: 20,
+        offset: 0,
+        coverQuality: 50,
+        minSongDuration: 1000,
+        sortBy: SortSongFields.TITLE,
+        sortOrder: SortSongOrder.DESC,
+      });
+      if (typeof response === "string") {
+        seterror(response);
+      } else {
+        setsongs(response);
+      }
     })();
   }, []);
+
+  if (error) {
+    return (
+      <View>
+        <Text>{error}</Text>
+      </View>
+    );
+  }
 
   return (
     <FlatList
