@@ -69,7 +69,7 @@ export default function PlayerControls() {
       <IconButton
         icon="heart"
         onPress={handleFav}
-        iconColor={isFab ? colors.tertiary : colors.outline}
+        iconColor={isFab ? colors.error : colors.outline}
       />
       <IconButton
         icon="play-skip-back"
@@ -84,7 +84,6 @@ export default function PlayerControls() {
           onPress={togglePlayback}
           size={48}
           iconColor={colors.secondary}
-          containerColor={colors.backdrop}
         />
       )}
       <IconButton

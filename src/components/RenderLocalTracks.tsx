@@ -1,16 +1,18 @@
 import SongItem from "@/components/SongItem";
 import { handlePlay } from "@/features/services/playbackService";
-import { Asset } from "expo-media-library";
 import React from "react";
 import { Pressable } from "react-native";
+import { Song } from "react-native-get-music-files/lib/typescript/src/NativeTurboSongs";
 import { Track } from "react-native-track-player";
 
-export default function RenderLocalTracks(asset: Asset) {
+export default function RenderLocalTracks(song: Song) {
   const track: Track = {
-    url: asset.uri,
-    title: asset.filename.split(".").shift(),
-    duration: asset.duration,
-    contentType: asset.mediaType,
+    url: song.url,
+    title: song.title,
+    duration: song.duration,
+    artist: song.artist,
+    album: song.album,
+    artwork: song.cover,
   };
 
   return (
