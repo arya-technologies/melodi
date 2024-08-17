@@ -74,7 +74,7 @@ export function Material3ThemeProvider({
       ImageColors.getColors(track.artwork, {
         fallback: "#ff0",
         cache: true,
-        key: track?.id,
+        key: track.artwork,
         quality: "highest",
       }).then((colors: ImageColorsResult) => {
         setColors(colors);
