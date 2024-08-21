@@ -1,7 +1,7 @@
 import settingsSlice from "@/features/slices/settingsSlice";
 import queueSlice from "@/features/slices/queueSlice";
 import favSlice from "@/features/slices/favSlice";
-import ExpoFileSystemStorage from "redux-persist-expo-filesystem";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
   FLUSH,
@@ -16,17 +16,17 @@ import {
 
 const settingsConfig = {
   key: "settings",
-  storage: ExpoFileSystemStorage,
+  storage: AsyncStorage,
 };
 
 const queueConfig = {
   key: "queue",
-  storage: ExpoFileSystemStorage,
+  storage: AsyncStorage,
 };
 
 const favConfig = {
   key: "favourites",
-  storage: ExpoFileSystemStorage,
+  storage: AsyncStorage,
 };
 
 const rootReducer = combineReducers({
